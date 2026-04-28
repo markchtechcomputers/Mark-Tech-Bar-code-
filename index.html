@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mark Tech Barcode Generator</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: black;
+    color: white;
+}
+
+/* MATRIX BACKGROUND */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* FLEX CENTER (SAFE) */
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 15px;
+}
+
+/* MAIN CARD */
+.container {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,255,0,0.3);
+}
+
+/* TEXT */
+h1 {
+    color: #00ff99;
+    margin-bottom: 5px;
+}
+
+p {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px 0;
+}
+
+/* BUTTONS */
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #00ff99;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+}
+
+button:hover {
+    background: #00cc77;
+}
+
+/* BARCODE */
+svg {
+    margin-top: 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #888;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="wrapper">
+<div class="container">
+    <h1>⚡ Mark Tech</h1>
+    <p>Pro Barcode Generator</p>
+
+    <input type="text" id="text" placeholder="Enter text or numbers">
+
+    <select id="format">
+        <option value="CODE128">CODE128 (All characters)</option>
+        <option value="EAN13">EAN-13 (Numbers only)</option>
+    </select>
+
+    <button onclick="generateBarcode()">Generate Barcode</button>
+    <button onclick="randomCode()">Generate Random Code</button>
+    <button onclick="downloadPNG()">Download PNG</button>
+
+    <svg id="barcode"></svg>
+
+    <div class="footer">Powered by Mark Tech</div>
+</div>
+</div>
+
+<script>
+// GENERATE
+function generateBarcode() {
+    let value = document.getElementById("text").value;
+    let format = document.getElementById("format").value;
+
+    if (!value) {
+        alert("Enter something first!");
+        return;
+    }
+
+    try {
+        JsBarcode("#barcode", value, {
+            format: format,
+            displayValue: true,
+            height: 100
+        });
+    } catch {
+        alert("Invalid input for selected format");
+    }
+}
+
+// RANDOM
+function randomCode() {
+    let code = Math.floor(100000000000 + Math.random() * 900000000000);
+    document.getElementById("text").value = code;
+}
+
+// DOWNLOAD PNG
+function downloadPNG() {
+    let svg = document.getElementById("barcode");
+    let serializer = new XMLSerializer();
+    let source = serializer.serializeToString(svg);
+
+    let img = new Image();
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext("2d");
+
+    img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+
+        let link = document.createElement("a");
+        link.download = "barcode.png";
+        link.href = canvas.toDataURL();
+        link.click();
+    };
+
+    img.src = "data:image/svg+xml;base64," + btoa(source);
+}
+
+// MATRIX EFFECT (FIXED)
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const letters = "01010101";
+const fontSize = 14;
+let columns = Math.floor(canvas.width / fontSize);
+let drops = Array(columns).fill(1);
+
+function draw() {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff99";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        let text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+setInterval(draw, 35);
+</script>
+
+</body>
+</html>
