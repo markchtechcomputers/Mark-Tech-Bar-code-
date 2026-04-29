@@ -15,7 +15,7 @@ body {
     color: white;
 }
 
-/* MATRIX BACKGROUND */
+/* MATRIX */
 canvas {
     position: fixed;
     top: 0;
@@ -23,37 +23,40 @@ canvas {
     z-index: -1;
 }
 
-/* FLEX CENTER (SAFE) */
+/* NAV */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.tech-btn {
+    background: #00ff99;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* MAIN */
 .wrapper {
     display: flex;
     justify-content: center;
     padding: 40px 15px;
 }
 
-/* MAIN CARD */
 .container {
     width: 100%;
     max-width: 420px;
     background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 25px;
     text-align: center;
     box-shadow: 0 0 25px rgba(0,255,0,0.3);
 }
 
-/* TEXT */
-h1 {
-    color: #00ff99;
-    margin-bottom: 5px;
-}
+h1 { color: #00ff99; }
 
-p {
-    color: #aaa;
-    font-size: 14px;
-}
-
-/* INPUTS */
 input, select {
     width: 100%;
     padding: 12px;
@@ -62,11 +65,10 @@ input, select {
     margin: 10px 0;
 }
 
-/* BUTTONS */
 button {
     padding: 12px;
-    border: none;
     border-radius: 10px;
+    border: none;
     background: #00ff99;
     font-weight: bold;
     cursor: pointer;
@@ -74,11 +76,6 @@ button {
     margin-top: 8px;
 }
 
-button:hover {
-    background: #00cc77;
-}
-
-/* BARCODE */
 svg {
     margin-top: 20px;
     background: white;
@@ -87,11 +84,56 @@ svg {
     width: 100%;
 }
 
-/* FOOTER */
-.footer {
-    margin-top: 15px;
+/* FLOAT BUTTONS */
+.float-left {
+    position: fixed;
+    left: 15px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.float-btn {
+    background: #00ff99;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
     font-size: 12px;
-    color: #888;
+    text-align: center;
+}
+
+/* WHATSAPP */
+.whatsapp {
+    position: fixed;
+    right: 15px;
+    bottom: 20px;
+    background: limegreen;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px lime;
+    cursor: pointer;
+}
+
+/* POPUP */
+.popup {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    left: 15px;
+    background: rgba(0,0,0,0.9);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* PAGES */
+.page {
+    display: none;
+    padding: 20px;
+}
+
+.active {
+    display: block;
 }
 </style>
 </head>
@@ -100,65 +142,112 @@ svg {
 
 <canvas id="matrix"></canvas>
 
+<div class="topbar">
+    <h3>⚡ Mark Tech</h3>
+    <div class="tech-btn" onclick="goTech()">TECH IT</div>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="mainPage" class="active">
 <div class="wrapper">
 <div class="container">
-    <h1>⚡ Mark Tech</h1>
-    <p>Pro Barcode Generator</p>
 
-    <input type="text" id="text" placeholder="Enter text or numbers">
+<h1>Barcode Generator</h1>
 
-    <select id="format">
-        <option value="CODE128">CODE128 (All characters)</option>
-        <option value="EAN13">EAN-13 (Numbers only)</option>
-    </select>
+<input type="text" id="text" placeholder="Enter text">
+<select id="format">
+<option value="CODE128">CODE128</option>
+<option value="EAN13">EAN-13</option>
+</select>
 
-    <button onclick="generateBarcode()">Generate Barcode</button>
-    <button onclick="randomCode()">Generate Random Code</button>
-    <button onclick="downloadPNG()">Download PNG</button>
+<button onclick="generateBarcode()">Generate</button>
+<button onclick="downloadPNG()">Download</button>
 
-    <svg id="barcode"></svg>
+<svg id="barcode"></svg>
 
-    <div class="footer">Powered by Mark Tech</div>
 </div>
 </div>
+</div>
+
+<!-- DONATION PAGE -->
+<div id="donatePage" class="page">
+<h2>💰 Support Mark Tech</h2>
+
+<p><b>KCB BANK</b><br>
+Paybill: 522522<br>
+Account: 1336980125</p>
+
+<p><b>FAMILY BANK</b><br>
+Paybill: 222111<br>
+Account: 085000113030</p>
+
+<button onclick="goHome()">Back</button>
+</div>
+
+<!-- FLOAT BUTTONS -->
+<div class="float-left">
+    <div class="float-btn" onclick="openDonate()">Donate</div>
+    <div class="float-btn" onclick="toggleContact()">Contact</div>
+</div>
+
+<!-- CONTACT POPUP -->
+<div id="contactBox" class="popup">
+    <p>📞 Call: +254724356178</p>
+    <p>💬 WhatsApp: 0724356178</p>
+    <p>📧 Email: marklinochieng@gmail.com</p>
+</div>
+
+<!-- WHATSAPP -->
+<div class="whatsapp" onclick="openWhatsApp()">💬</div>
 
 <script>
-// GENERATE
+// NAVIGATION
+function openDonate() {
+    document.getElementById("mainPage").classList.remove("active");
+    document.getElementById("donatePage").classList.add("active");
+}
+
+function goHome() {
+    document.getElementById("donatePage").classList.remove("active");
+    document.getElementById("mainPage").classList.add("active");
+}
+
+// CONTACT
+function toggleContact() {
+    let box = document.getElementById("contactBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+// WHATSAPP
+function openWhatsApp() {
+    window.open("https://wa.me/254724356178");
+}
+
+// TECH SITE
+function goTech() {
+    window.open("https://manlung-tech-city.vercel.app/");
+}
+
+// BARCODE
 function generateBarcode() {
     let value = document.getElementById("text").value;
     let format = document.getElementById("format").value;
 
-    if (!value) {
-        alert("Enter something first!");
-        return;
-    }
+    if (!value) return alert("Enter value");
 
-    try {
-        JsBarcode("#barcode", value, {
-            format: format,
-            displayValue: true,
-            height: 100
-        });
-    } catch {
-        alert("Invalid input for selected format");
-    }
+    JsBarcode("#barcode", value, {
+        format: format,
+        displayValue: true
+    });
 }
 
-// RANDOM
-function randomCode() {
-    let code = Math.floor(100000000000 + Math.random() * 900000000000);
-    document.getElementById("text").value = code;
-}
-
-// DOWNLOAD PNG
+// DOWNLOAD
 function downloadPNG() {
     let svg = document.getElementById("barcode");
-    let serializer = new XMLSerializer();
-    let source = serializer.serializeToString(svg);
-
-    let img = new Image();
+    let data = new XMLSerializer().serializeToString(svg);
     let canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
+    let img = new Image();
 
     img.onload = function () {
         canvas.width = img.width;
@@ -173,24 +262,20 @@ function downloadPNG() {
         link.click();
     };
 
-    img.src = "data:image/svg+xml;base64," + btoa(source);
+    img.src = "data:image/svg+xml;base64," + btoa(data);
 }
 
-// MATRIX EFFECT (FIXED)
+// MATRIX
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-const letters = "01010101";
+const letters = "010101";
 const fontSize = 14;
-let columns = Math.floor(canvas.width / fontSize);
-let drops = Array(columns).fill(1);
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
 
 function draw() {
     ctx.fillStyle = "rgba(0,0,0,0.05)";
@@ -203,9 +288,7 @@ function draw() {
         let text = letters[Math.floor(Math.random() * letters.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
+        if (drops[i] * fontSize > canvas.height) drops[i] = 0;
         drops[i]++;
     }
 }
