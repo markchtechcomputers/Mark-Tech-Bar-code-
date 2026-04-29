@@ -15,6 +15,36 @@ body {
     background: #000;
     color: white;
     overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.light-theme {
+    background: #f0f0f0;
+    color: black;
+}
+
+body.light-theme .container,
+body.light-theme .modal-content,
+body.light-theme .about-section {
+    background: rgba(255,255,255,0.9);
+    border-color: blue;
+    box-shadow: 0 0 20px blue;
+}
+
+body.light-theme .tech-btn,
+body.light-theme .music-icon,
+body.light-theme .theme-btn,
+body.light-theme button {
+    background: blue;
+    box-shadow: 0 0 10px blue;
+}
+
+body.light-theme .title {
+    text-shadow: 0 0 10px blue, 0 0 20px blue, 0 0 30px blue;
+}
+
+body.light-theme .glowing-text {
+    text-shadow: 0 0 10px blue, 0 0 20px blue, 0 0 30px blue;
 }
 
 /* TOP BAR */
@@ -32,13 +62,37 @@ body {
     font-weight: bold;
 }
 
+.music-icon {
+    background: lime;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 0 10px lime;
+}
+
+.top-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.theme-btn {
+    background: lime;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 0 10px lime;
+}
+
 /* TITLE */
 .title {
     text-align: center;
     font-size: 45px;
     font-weight: bold;
     color: white;
-    animation: pulse 1s ease-in-out 5;
+    text-shadow: 0 0 10px lime, 0 0 20px lime, 0 0 30px lime;
+    animation: pulse 1s ease-in-out 5, glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes pulse {
@@ -82,6 +136,8 @@ body {
     padding: 20px;
     border-radius: 15px;
     text-align: center;
+    border: 2px solid lime;
+    box-shadow: 0 0 20px lime;
 }
 
 /* INPUTS */
@@ -103,6 +159,31 @@ button {
     background: lime;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    box-shadow: 0 0 15px lime;
+    transform: scale(1.05);
+}
+
+/* ADVANCED OPTIONS */
+#advanced-options {
+    margin-top: 10px;
+}
+
+#advanced-options label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#advanced-options input, #advanced-options select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
 }
 
 /* OUTPUT */
@@ -112,6 +193,8 @@ svg, canvas {
     padding: 10px;
     border-radius: 10px;
     width: 100%;
+    border: 2px solid lime;
+    box-shadow: 0 0 15px lime;
 }
 
 /* SOFTWARE SECTION */
@@ -164,15 +247,17 @@ svg, canvas {
 }
 
 /* CONTACT */
-.contact-box {
+.contact-modal {
     position: fixed;
-    left: 10px;
-    bottom: 80px;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
     background: rgba(0,0,0,0.9);
-    padding: 12px;
-    border-radius: 10px;
-    display: none;
-    z-index: 3;
+    display:none;
+    justify-content: center;
+    align-items: center;
+    z-index:5;
 }
 
 /* WHATSAPP */
@@ -195,10 +280,60 @@ svg, canvas {
     left:0;
     width:100%;
     height:100%;
-    background:black;
+    background: rgba(0,0,0,0.9);
     display:none;
-    padding:20px;
+    justify-content: center;
+    align-items: center;
     z-index:5;
+}
+
+.modal-content {
+    background: rgba(0,0,0,0.95);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid lime;
+    box-shadow: 0 0 30px lime;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+}
+
+.donation-details {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.bank-info {
+    text-align: center;
+}
+
+.bank-info canvas {
+    margin-top: 10px;
+    border: 1px solid lime;
+}
+
+/* ABOUT */
+.about-section {
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    margin-top: 20px;
+}
+
+.glowing-text {
+    font-size: 18px;
+    color: white;
+    text-shadow: 0 0 10px lime, 0 0 20px lime, 0 0 30px lime;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px lime; }
+    to { text-shadow: 0 0 20px lime, 0 0 30px lime, 0 0 40px lime; }
 }
 </style>
 </head>
@@ -210,6 +345,10 @@ svg, canvas {
     <div></div>
     <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">
         TECH
+    </div>
+    <div class="top-controls">
+        <div class="music-icon" onclick="toggleMusic()">🎵</div>
+        <div class="theme-btn" onclick="toggleTheme()">🌙</div>
     </div>
 </div>
 
@@ -230,39 +369,43 @@ svg, canvas {
 <option value="CODE128">CODE128</option>
 <option value="CODE39">CODE39</option>
 <option value="EAN13">EAN13</option>
+<option value="EAN8">EAN8</option>
+<option value="UPC">UPC</option>
+<option value="ITF">ITF</option>
 <option value="QR">QR CODE</option>
 </select>
 
+<!-- Advanced Options -->
+<div id="advanced-options" style="display: none;">
+<label for="height">Barcode Height:</label>
+<input type="number" id="height" placeholder="Height (px)" value="100">
+
+<label for="width">Barcode Width:</label>
+<input type="number" id="width" placeholder="Width (px)" value="2">
+
+<label for="qr-size">QR Size:</label>
+<input type="number" id="qr-size" placeholder="Size (px)" value="256">
+
+<label for="error-level">QR Error Correction:</label>
+<select id="error-level">
+<option value="L">Low (7%)</option>
+<option value="M">Medium (15%)</option>
+<option value="Q">Quartile (25%)</option>
+<option value="H">High (30%)</option>
+</select>
+</div>
+
+<button onclick="toggleAdvanced()">Advanced Options</button>
 <button onclick="generate()">Generate</button>
+<button onclick="downloadCode()">Download</button>
+<button onclick="shareCode()">Share</button>
+<button onclick="clearAll()">Clear</button>
 
 <svg id="barcode"></svg>
 <canvas id="qrcode"></canvas>
 
 </div>
 </div>
-
-<!-- SOFTWARE -->
-<section class="software-section">
-<h2>Barcode Software</h2>
-
-<div class="software-grid">
-<div class="card" onclick="preset('OFFICE-12345')">TBarCode Office</div>
-<div class="card" onclick="preset('DEV-67890')">TBarCode/X</div>
-<div class="card" onclick="preset('SDK-11223')">TBarCode SDK</div>
-<div class="card" onclick="preset('STUDIO-44556')">Barcode Studio</div>
-</div>
-</section>
-
-<!-- SOLUTIONS -->
-<section class="software-section">
-<h2>Software & Solutions</h2>
-
-<div class="software-grid">
-<div class="card" onclick="makeQR('https://manlung-tech-city.vercel.app/')">Web & Cloud</div>
-<div class="card" onclick="makeQR('https://training.com')">Training</div>
-<div class="card" onclick="makeQR('tel:+254724356178')">Consulting</div>
-</div>
-</section>
 
 <!-- FLOAT -->
 <div class="float-left">
@@ -271,10 +414,14 @@ svg, canvas {
 </div>
 
 <!-- CONTACT -->
-<div id="contactBox" class="contact-box">
-📞 +254724356178<br>
-💬 0724356178<br>
-📧 marklinochieng@gmail.com
+<div id="contactModal" class="contact-modal">
+<div class="modal-content">
+<h2>Contact Us</h2>
+<p>📞 Phone: +254724356178</p>
+<p>💬 WhatsApp: 0724356178</p>
+<p>📧 Email: marklinochieng@gmail.com</p>
+<button onclick="closeContact()">Close</button>
+</div>
 </div>
 
 <!-- WHATSAPP -->
@@ -282,11 +429,44 @@ svg, canvas {
 
 <!-- DONATE -->
 <div id="donatePanel" class="donation-panel">
+<div class="modal-content">
 <h2>Support Mark Tech</h2>
-<p>KCB: 522522 | 1336980125</p>
-<p>Family Bank: 222111 | 085000113030</p>
-<button onclick="closeDonate()">Back</button>
+<p>Scan QR or use details below:</p>
+<div class="donation-details">
+<div class="bank-info">
+<h3>M-Pesa</h3>
+<p>Number: 0724356178</p>
+<canvas id="mpesa-qr"></canvas>
 </div>
+<div class="bank-info">
+<h3>KCB</h3>
+<p>Account: 522522</p>
+<p>Code: 1336980125</p>
+<canvas id="kcb-qr"></canvas>
+</div>
+<div class="bank-info">
+<h3>Family Bank</h3>
+<p>Account: 222111</p>
+<p>Code: 085000113030</p>
+<canvas id="family-qr"></canvas>
+</div>
+</div>
+<button onclick="closeDonate()">Close</button>
+</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="bg-music" loop>
+    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    Your browser does not support the audio element.
+</audio>
+
+<!-- ABOUT -->
+<section class="about-section">
+<h2>About Mark Tech</h2>
+<p class="glowing-text">Professional barcode and QR code generation tool. Create custom barcodes for retail, inventory, and more. Advanced features for customization and high-quality output.</p>
+<p class="glowing-text">Developed by Mark Ochieng - Expert in tech solutions.</p>
+</section>
 
 <script>
 // GENERATE
@@ -296,40 +476,106 @@ function generate() {
 
     if (!val) return alert("Enter value");
 
-    if (type === "QR CODE") {
+    if (type === "QR") {
         makeQR(val);
         return;
     }
 
+    // Validation for specific formats
     if (type === "EAN13" && !/^\d{12}$/.test(val)) {
         alert("EAN13 requires 12 digits");
         return;
     }
+    if (type === "EAN8" && !/^\d{7}$/.test(val)) {
+        alert("EAN8 requires 7 digits");
+        return;
+    }
+    if (type === "UPC" && !/^\d{11}$/.test(val)) {
+        alert("UPC requires 11 digits");
+        return;
+    }
+
+    let height = parseInt(document.getElementById("height").value) || 100;
+    let width = parseInt(document.getElementById("width").value) || 2;
 
     JsBarcode("#barcode", val, {
         format: type,
-        displayValue: true
+        displayValue: true,
+        height: height,
+        width: width
     });
 }
 
-// PRESET
-function preset(code) {
-    JsBarcode("#barcode", code, {format:"CODE128"});
+// QR
+function makeQR(data, canvasId = "qrcode") {
+    let size = canvasId === "qrcode" ? parseInt(document.getElementById("qr-size").value) || 256 : 128;
+    let errorLevel = canvasId === "qrcode" ? document.getElementById("error-level").value : "M";
+    let canvas = document.getElementById(canvasId);
+    QRCode.toCanvas(canvas, data, {
+        width: size,
+        height: size,
+        errorCorrectionLevel: errorLevel
+    });
 }
 
-// QR
-function makeQR(data) {
-    QRCode.toCanvas(document.getElementById("qrcode"), data);
+// TOGGLE ADVANCED
+function toggleAdvanced() {
+    let opts = document.getElementById("advanced-options");
+    opts.style.display = opts.style.display === "none" ? "block" : "none";
+}
+
+// DOWNLOAD
+function downloadCode() {
+    let barcode = document.getElementById("barcode");
+    let qrcode = document.getElementById("qrcode");
+    if (barcode.style.display !== "none") {
+        let svg = barcode.outerHTML;
+        let blob = new Blob([svg], {type: "image/svg+xml"});
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "barcode.svg";
+        a.click();
+    } else if (qrcode.style.display !== "none") {
+        let link = document.createElement("a");
+        link.download = "qrcode.png";
+        link.href = qrcode.toDataURL();
+        link.click();
+    }
+}
+
+// SHARE
+function shareCode() {
+    let text = document.getElementById("text").value;
+    if (navigator.share) {
+        navigator.share({
+            title: 'Generated Code',
+            text: 'Check out this barcode/QR: ' + text,
+            url: window.location.href
+        });
+    } else {
+        navigator.clipboard.writeText(text).then(() => alert('Code copied to clipboard!'));
+    }
 }
 
 // DONATE
-function openDonate(){document.getElementById("donatePanel").style.display="block";}
+function openDonate(){
+    document.getElementById("donatePanel").style.display="flex";
+    // Generate QR for donation accounts
+    makeQR("M-Pesa: 0724356178", "mpesa-qr");
+    makeQR("KCB: 522522 | 1336980125", "kcb-qr");
+    makeQR("Family Bank: 222111 | 085000113030", "family-qr");
+}
 function closeDonate(){document.getElementById("donatePanel").style.display="none";}
 
-// CONTACT
-function toggleContact(){
-let box=document.getElementById("contactBox");
-box.style.display=box.style.display==="block"?"none":"block";
+// THEME
+function toggleTheme() {
+    let body = document.body;
+    if (body.classList.contains('light-theme')) {
+        body.classList.remove('light-theme');
+    } else {
+        body.classList.add('light-theme');
+    }
 }
 
 // BACKGROUND LINES
@@ -345,3 +591,4 @@ for(let i=0;i<40;i++){
 
 </body>
 </html>
+
