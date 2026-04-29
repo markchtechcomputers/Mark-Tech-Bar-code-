@@ -10,47 +10,81 @@
 <style>
 body {
     margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background: black;
+    font-family: Arial, sans-serif;
+    background: #000;
     color: white;
-    overflow-x: hidden;
+}
+
+/* TOP BAR */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.tech-btn {
+    background: lime;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 /* TITLE */
 .title {
     text-align: center;
-    font-size: 40px;
+    font-size: 45px;
     font-weight: bold;
-    margin-top: 20px;
-    color: red;
-    text-shadow: 0 0 10px red, 0 0 20px red;
-    animation: glow 2s infinite alternate;
+    color: white;
+    animation: redPulse 1s ease-in-out 5;
 }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px red; }
-    to { text-shadow: 0 0 30px red; }
+@keyframes redPulse {
+    0% { text-shadow: 0 0 0px red; }
+    50% { text-shadow: 0 0 30px red; }
+    100% { text-shadow: 0 0 0px red; }
 }
 
-/* BACKGROUND */
-canvas {
+/* BACKGROUND LINES */
+.lines {
     position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
-/* CONTAINER */
+.line {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: rgba(0,255,0,0.2);
+    animation: moveUp linear infinite;
+}
+
+@keyframes moveUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(-100%); }
+}
+
+/* MAIN */
+.wrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
 .container {
-    max-width: 400px;
-    margin: 40px auto;
-    background: rgba(0,0,0,0.8);
+    max-width: 420px;
+    width: 100%;
+    background: rgba(0,0,0,0.85);
     padding: 20px;
     border-radius: 15px;
     text-align: center;
 }
 
-/* INPUTS */
+/* INPUT */
 input, select {
     width: 100%;
     padding: 10px;
@@ -59,7 +93,7 @@ input, select {
     border: none;
 }
 
-/* BUTTONS */
+/* BUTTON */
 button {
     width: 100%;
     padding: 10px;
@@ -67,8 +101,8 @@ button {
     border: none;
     border-radius: 8px;
     background: lime;
-    cursor: pointer;
     font-weight: bold;
+    cursor: pointer;
 }
 
 /* BARCODE */
@@ -80,27 +114,38 @@ svg {
     width: 100%;
 }
 
-/* FLOAT BUTTONS */
-.donate-btn {
+/* FLOAT */
+.float-left {
     position: fixed;
     left: 10px;
     bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 3;
+}
+
+.float-btn {
     background: red;
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 12px;
 }
 
+/* CONTACT */
 .contact-box {
     position: fixed;
     left: 10px;
-    bottom: 70px;
+    bottom: 80px;
     background: rgba(0,0,0,0.9);
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
     display: none;
+    z-index: 3;
 }
 
+/* WHATSAPP */
 .whatsapp {
     position: fixed;
     right: 15px;
@@ -110,9 +155,10 @@ svg {
     border-radius: 50%;
     box-shadow: 0 0 15px lime;
     cursor: pointer;
+    z-index: 3;
 }
 
-/* DONATION PANEL */
+/* DONATION */
 .donation-panel {
     position: fixed;
     top: 0;
@@ -120,85 +166,131 @@ svg {
     width: 100%;
     height: 100%;
     background: black;
-    color: white;
     display: none;
     padding: 20px;
+    z-index: 5;
 }
 
-/* GREEN LINES */
-.lines {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+/* SOFTWARE SECTIONS */
+.software-section {
+    position: relative;
+    z-index: 2;
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
 }
 
-.line {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    background: rgba(0,255,0,0.2);
-    animation: moveUp 5s linear infinite;
+.software-section h2 {
+    color: lime;
 }
 
-@keyframes moveUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(-100%); }
+.software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card {
+    background: rgba(0,0,0,0.85);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,255,0,0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px lime;
 }
 </style>
 </head>
 
 <body>
 
-<div class="title">MARK TECH</div>
+<div class="topbar">
+    <div></div>
+    <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">
+        TECH
+    </div>
+</div>
 
-<canvas id="matrix"></canvas>
+<div class="title">MARK TECH</div>
 
 <div class="lines" id="lines"></div>
 
+<!-- BARCODE -->
+<div class="wrapper">
 <div class="container">
-    <h3>Barcode Generator</h3>
 
-    <input type="text" id="text" placeholder="Enter text">
+<h3>Barcode Generator</h3>
 
-    <select id="format">
-        <option value="CODE128">CODE128</option>
-        <option value="EAN13">EAN13</option>
-    </select>
+<input type="text" id="text" placeholder="Enter text">
+<select id="format">
+<option value="CODE128">CODE128</option>
+<option value="EAN13">EAN13</option>
+</select>
 
-    <button onclick="generate()">Generate</button>
+<button onclick="generate()">Generate Barcode</button>
 
-    <svg id="barcode"></svg>
+<svg id="barcode"></svg>
+
+</div>
 </div>
 
-<!-- FLOAT -->
-<div class="donate-btn" onclick="openDonate()">Donate</div>
+<!-- SOFTWARE -->
+<section class="software-section">
+<h2>Barcode Software (Barcodes / QR / 2D)</h2>
 
-<div class="contact-box" id="contactBox">
-    📞 +254724356178<br>
-    💬 0724356178<br>
-    📧 marklinochieng@gmail.com
+<p>Cutting-edge barcode and QR tools for developers and businesses.</p>
+
+<div class="software-grid">
+<div class="card">TBarCode Office</div>
+<div class="card">TBarCode/X</div>
+<div class="card">TBarCode SDK</div>
+<div class="card">Barcode Studio</div>
+</div>
+</section>
+
+<!-- SOLUTIONS -->
+<section class="software-section">
+<h2>Software & Solutions</h2>
+
+<div class="software-grid">
+<div class="card">Software & Apps</div>
+<div class="card">Web & Cloud</div>
+<div class="card">Training</div>
+<div class="card">Consulting</div>
+</div>
+</section>
+
+<!-- FLOAT -->
+<div class="float-left">
+<div class="float-btn" onclick="openDonate()">Donate</div>
+<div class="float-btn" onclick="toggleContact()">Contact</div>
+</div>
+
+<div id="contactBox" class="contact-box">
+📞 +254724356178<br>
+💬 0724356178<br>
+📧 marklinochieng@gmail.com
 </div>
 
 <div class="whatsapp" onclick="window.open('https://wa.me/254724356178')">💬</div>
 
-<!-- DONATION PAGE -->
-<div class="donation-panel" id="donatePanel">
-    <h2>Support Mark Tech</h2>
-
-    <p>KCB BANK<br>Paybill: 522522<br>Account: 1336980125</p>
-
-    <p>FAMILY BANK<br>Paybill: 222111<br>Account: 085000113030</p>
-
-    <button onclick="closeDonate()">Back</button>
+<!-- DONATE -->
+<div id="donatePanel" class="donation-panel">
+<h2>Support Mark Tech</h2>
+<p>KCB: 522522 | 1336980125</p>
+<p>Family Bank: 222111 | 085000113030</p>
+<button onclick="closeDonate()">Back</button>
 </div>
 
 <script>
-// BARCODE
 function generate() {
     let val = document.getElementById("text").value;
     let format = document.getElementById("format").value;
-
     if (!val) return alert("Enter value");
 
     JsBarcode("#barcode", val, {
@@ -207,59 +299,30 @@ function generate() {
     });
 }
 
-// DONATE
 function openDonate() {
     document.getElementById("donatePanel").style.display = "block";
 }
+
 function closeDonate() {
     document.getElementById("donatePanel").style.display = "none";
 }
 
-// CONTACT TOGGLE
-document.querySelector(".donate-btn").addEventListener("dblclick", () => {
+function toggleContact() {
     let box = document.getElementById("contactBox");
     box.style.display = box.style.display === "block" ? "none" : "block";
-});
-
-// MATRIX (SLOWED)
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const letters = "010101";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-
-function draw() {
-    ctx.fillStyle = "rgba(0,0,0,0.08)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#00ff00";
-    ctx.font = fontSize + "px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-        let text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height) drops[i] = 0;
-        drops[i]++;
-    }
 }
-setInterval(draw, 80);
 
-// GREEN LINES
-const linesContainer = document.getElementById("lines");
-for (let i = 0; i < 30; i++) {
+// FAST LINES
+const container = document.getElementById("lines");
+for (let i = 0; i < 40; i++) {
     let line = document.createElement("div");
     line.className = "line";
     line.style.left = Math.random() * 100 + "%";
-    line.style.animationDuration = (3 + Math.random() * 5) + "s";
-    linesContainer.appendChild(line);
+    line.style.animationDuration = (1 + Math.random() * 2) + "s";
+    container.appendChild(line);
 }
 </script>
 
 </body>
+</html>
 </html>
