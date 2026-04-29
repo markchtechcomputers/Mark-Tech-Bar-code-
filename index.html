@@ -85,6 +85,30 @@ body.light-theme .glowing-text {
     box-shadow: 0 0 10px lime;
 }
 
+/* MUSIC PANEL */
+.music-panel {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border-radius: 10px;
+    display: none;
+    z-index: 10;
+    border: 1px solid lime;
+    box-shadow: 0 0 15px lime;
+}
+
+.music-panel button {
+    background: lime;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
 /* TITLE */
 .title {
     text-align: center;
@@ -257,7 +281,7 @@ svg, canvas {
     display:none;
     justify-content: center;
     align-items: center;
-    z-index:5;
+    z-index:100;
 }
 
 /* WHATSAPP */
@@ -284,7 +308,7 @@ svg, canvas {
     display:none;
     justify-content: center;
     align-items: center;
-    z-index:5;
+    z-index:100;
 }
 
 .modal-content {
@@ -314,14 +338,33 @@ svg, canvas {
     border: 1px solid lime;
 }
 
-/* ABOUT */
-.about-section {
+/* HISTORY */
+.history-section {
     position: relative;
     z-index: 2;
-    padding: 40px 20px;
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
     text-align: center;
     background: rgba(0,0,0,0.8);
     margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid lime;
+}
+
+#history-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.history-item {
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid lime;
+    cursor: pointer;
 }
 
 .glowing-text {
@@ -347,12 +390,20 @@ svg, canvas {
         TECH
     </div>
     <div class="top-controls">
-        <div class="music-icon" onclick="toggleMusic()">🎵</div>
+        <div class="music-icon" onclick="toggleMusicPanel()">🎵</div>
         <div class="theme-btn" onclick="toggleTheme()">🌙</div>
     </div>
 </div>
 
 <div class="title">MARK TECH</div>
+
+<!-- MUSIC PANEL -->
+<div id="music-panel" class="music-panel">
+    <button onclick="playPauseMusic()">▶️</button>
+    <button onclick="skipMusic(-10)">⏪</button>
+    <button onclick="skipMusic(10)">⏩</button>
+    <button onclick="closeMusicPanel()">✕</button>
+</div>
 
 <!-- BACKGROUND -->
 <div class="lines" id="lines"></div>
@@ -399,6 +450,8 @@ svg, canvas {
 <button onclick="generate()">Generate</button>
 <button onclick="downloadCode()">Download</button>
 <button onclick="shareCode()">Share</button>
+<button onclick="printCode()">Print</button>
+<button onclick="saveToHistory()">Save</button>
 <button onclick="clearAll()">Clear</button>
 
 <svg id="barcode"></svg>
@@ -406,6 +459,12 @@ svg, canvas {
 
 </div>
 </div>
+
+<!-- HISTORY -->
+<section class="history-section">
+<h3>Generation History</h3>
+<div id="history-list"></div>
+</section>
 
 <!-- FLOAT -->
 <div class="float-left">
@@ -457,7 +516,7 @@ svg, canvas {
 
 <!-- AUDIO -->
 <audio id="bg-music" loop>
-    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    <source src="https://s21.aconvert.com/convert/p3r68-cdx67/b4qxp-fu1kv.mp3" type="audio/mp3">
     Your browser does not support the audio element.
 </audio>
 
@@ -558,6 +617,39 @@ function shareCode() {
     }
 }
 
+// PRINT
+function printCode() {
+    window.print();
+}
+
+// SAVE TO HISTORY
+function saveToHistory() {
+    let text = document.getElementById("text").value;
+    if (!text) return;
+    let history = JSON.parse(localStorage.getItem('barcodeHistory') || '[]');
+    history.unshift(text);
+    if (history.length > 10) history = history.slice(0, 10); // Keep last 10
+    localStorage.setItem('barcodeHistory', JSON.stringify(history));
+    loadHistory();
+}
+
+// LOAD HISTORY
+function loadHistory() {
+    let history = JSON.parse(localStorage.getItem('barcodeHistory') || '[]');
+    let list = document.getElementById('history-list');
+    list.innerHTML = '';
+    history.forEach(item => {
+        let div = document.createElement('div');
+        div.className = 'history-item';
+        div.textContent = item;
+        div.onclick = () => {
+            document.getElementById('text').value = item;
+            generate();
+        };
+        list.appendChild(div);
+    });
+}
+
 // DONATE
 function openDonate(){
     document.getElementById("donatePanel").style.display="flex";
@@ -578,6 +670,30 @@ function toggleTheme() {
     }
 }
 
+// MUSIC
+function toggleMusicPanel() {
+    let panel = document.getElementById("music-panel");
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+}
+
+function playPauseMusic() {
+    let audio = document.getElementById("bg-music");
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+}
+
+function skipMusic(seconds) {
+    let audio = document.getElementById("bg-music");
+    audio.currentTime += seconds;
+}
+
+function closeMusicPanel() {
+    document.getElementById("music-panel").style.display = "none";
+}
+
 // BACKGROUND LINES
 const c=document.getElementById("lines");
 for(let i=0;i<40;i++){
@@ -587,6 +703,9 @@ for(let i=0;i<40;i++){
  l.style.animationDuration=(1+Math.random()*2)+"s";
  c.appendChild(l);
 }
+
+// LOAD HISTORY ON START
+loadHistory();
 </script>
 
 </body>
