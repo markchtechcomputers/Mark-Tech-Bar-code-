@@ -6,6 +6,7 @@
 <title>MARK TECH</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <style>
 body {
@@ -15,7 +16,7 @@ body {
     color: white;
 }
 
-/* TOP BAR */
+/* TOP */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -27,22 +28,17 @@ body {
     padding: 8px 15px;
     border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
 }
 
 /* TITLE */
 .title {
     text-align: center;
     font-size: 45px;
-    font-weight: bold;
     color: white;
-    animation: redPulse 1s ease-in-out 5;
+    animation: pulse 1s ease-in-out 5;
 }
-
-@keyframes redPulse {
-    0% { text-shadow: 0 0 0px red; }
+@keyframes pulse {
     50% { text-shadow: 0 0 30px red; }
-    100% { text-shadow: 0 0 0px red; }
 }
 
 /* BACKGROUND LINES */
@@ -52,7 +48,6 @@ body {
     height: 100%;
     z-index: 0;
 }
-
 .line {
     position: absolute;
     width: 2px;
@@ -60,7 +55,6 @@ body {
     background: rgba(0,255,0,0.2);
     animation: moveUp linear infinite;
 }
-
 @keyframes moveUp {
     from { transform: translateY(100%); }
     to { transform: translateY(-100%); }
@@ -72,12 +66,11 @@ body {
     z-index: 2;
     display: flex;
     justify-content: center;
-    padding: 30px;
+    padding: 20px;
 }
-
 .container {
-    max-width: 420px;
     width: 100%;
+    max-width: 420px;
     background: rgba(0,0,0,0.85);
     padding: 20px;
     border-radius: 15px;
@@ -105,13 +98,40 @@ button {
     cursor: pointer;
 }
 
-/* BARCODE */
-svg {
+/* OUTPUT */
+svg, canvas {
     margin-top: 15px;
     background: white;
     padding: 10px;
     border-radius: 10px;
     width: 100%;
+}
+
+/* SECTIONS */
+.software-section {
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+.software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+.card {
+    background: rgba(0,0,0,0.85);
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px lime;
 }
 
 /* FLOAT */
@@ -124,16 +144,13 @@ svg {
     gap: 10px;
     z-index: 3;
 }
-
 .float-btn {
     background: red;
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 12px;
 }
 
-/* CONTACT */
 .contact-box {
     position: fixed;
     left: 10px;
@@ -142,10 +159,8 @@ svg {
     padding: 12px;
     border-radius: 10px;
     display: none;
-    z-index: 3;
 }
 
-/* WHATSAPP */
 .whatsapp {
     position: fixed;
     right: 15px;
@@ -155,54 +170,18 @@ svg {
     border-radius: 50%;
     box-shadow: 0 0 15px lime;
     cursor: pointer;
-    z-index: 3;
 }
 
-/* DONATION */
 .donation-panel {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
-    display: none;
-    padding: 20px;
-    z-index: 5;
-}
-
-/* SOFTWARE SECTIONS */
-.software-section {
-    position: relative;
-    z-index: 2;
-    padding: 50px 20px;
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-}
-
-.software-section h2 {
-    color: lime;
-}
-
-.software-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.card {
-    background: rgba(0,0,0,0.85);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,255,0,0.2);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px lime;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    display:none;
+    padding:20px;
+    z-index:5;
 }
 </style>
 </head>
@@ -211,57 +190,54 @@ svg {
 
 <div class="topbar">
     <div></div>
-    <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">
-        TECH
-    </div>
+    <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">TECH</div>
 </div>
 
 <div class="title">MARK TECH</div>
 
 <div class="lines" id="lines"></div>
 
-<!-- BARCODE -->
+<!-- GENERATOR -->
 <div class="wrapper">
 <div class="container">
 
-<h3>Barcode Generator</h3>
+<h3>Generate Barcode / QR</h3>
 
-<input type="text" id="text" placeholder="Enter text">
+<input type="text" id="text" placeholder="Enter text, link or image URL">
+
 <select id="format">
-<option value="CODE128">CODE128</option>
-<option value="EAN13">EAN13</option>
+<option value="CODE128">Barcode</option>
+<option value="QR">QR Code</option>
 </select>
 
-<button onclick="generate()">Generate Barcode</button>
+<button onclick="generate()">Generate</button>
 
 <svg id="barcode"></svg>
+<canvas id="qrcode"></canvas>
 
 </div>
 </div>
 
 <!-- SOFTWARE -->
 <section class="software-section">
-<h2>Barcode Software (Barcodes / QR / 2D)</h2>
-
-<p>Cutting-edge barcode and QR tools for developers and businesses.</p>
+<h2>Barcode Software</h2>
 
 <div class="software-grid">
-<div class="card">TBarCode Office</div>
-<div class="card">TBarCode/X</div>
-<div class="card">TBarCode SDK</div>
-<div class="card">Barcode Studio</div>
+<div class="card" onclick="preset('OFFICE-123')">TBarCode Office</div>
+<div class="card" onclick="preset('DEV-456')">TBarCode/X</div>
+<div class="card" onclick="preset('SDK-789')">TBarCode SDK</div>
+<div class="card" onclick="preset('STUDIO-000')">Barcode Studio</div>
 </div>
 </section>
 
 <!-- SOLUTIONS -->
 <section class="software-section">
-<h2>Software & Solutions</h2>
+<h2>Solutions</h2>
 
 <div class="software-grid">
-<div class="card">Software & Apps</div>
-<div class="card">Web & Cloud</div>
-<div class="card">Training</div>
-<div class="card">Consulting</div>
+<div class="card" onclick="makeQR('https://manlung-tech-city.vercel.app/')">Web & Cloud</div>
+<div class="card" onclick="makeQR('https://training.com')">Training</div>
+<div class="card" onclick="makeQR('tel:+254724356178')">Consulting</div>
 </div>
 </section>
 
@@ -288,41 +264,50 @@ svg {
 </div>
 
 <script>
+// MAIN GENERATOR
 function generate() {
     let val = document.getElementById("text").value;
-    let format = document.getElementById("format").value;
-    if (!val) return alert("Enter value");
+    let type = document.getElementById("format").value;
 
-    JsBarcode("#barcode", val, {
-        format: format,
-        displayValue: true
-    });
+    if (!val) return alert("Enter something");
+
+    if (type === "QR") {
+        makeQR(val);
+    } else {
+        JsBarcode("#barcode", val, {format:"CODE128"});
+    }
 }
 
-function openDonate() {
-    document.getElementById("donatePanel").style.display = "block";
+// PRESET BARCODE
+function preset(code) {
+    JsBarcode("#barcode", code, {format:"CODE128"});
 }
 
-function closeDonate() {
-    document.getElementById("donatePanel").style.display = "none";
+// QR
+function makeQR(data) {
+    QRCode.toCanvas(document.getElementById("qrcode"), data);
 }
 
-function toggleContact() {
-    let box = document.getElementById("contactBox");
-    box.style.display = box.style.display === "block" ? "none" : "block";
+// DONATE
+function openDonate(){document.getElementById("donatePanel").style.display="block";}
+function closeDonate(){document.getElementById("donatePanel").style.display="none";}
+
+// CONTACT
+function toggleContact(){
+let box=document.getElementById("contactBox");
+box.style.display=box.style.display==="block"?"none":"block";
 }
 
-// FAST LINES
-const container = document.getElementById("lines");
-for (let i = 0; i < 40; i++) {
-    let line = document.createElement("div");
-    line.className = "line";
-    line.style.left = Math.random() * 100 + "%";
-    line.style.animationDuration = (1 + Math.random() * 2) + "s";
-    container.appendChild(line);
+// LINES
+const c=document.getElementById("lines");
+for(let i=0;i<40;i++){
+ let l=document.createElement("div");
+ l.className="line";
+ l.style.left=Math.random()*100+"%";
+ l.style.animationDuration=(1+Math.random()*2)+"s";
+ c.appendChild(l);
 }
 </script>
 
 </body>
-</html>
 </html>
