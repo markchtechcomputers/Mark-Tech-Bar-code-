@@ -14,9 +14,10 @@ body {
     font-family: Arial, sans-serif;
     background: #000;
     color: white;
+    overflow-x: hidden;
 }
 
-/* TOP */
+/* TOP BAR */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -28,15 +29,18 @@ body {
     padding: 8px 15px;
     border-radius: 10px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 /* TITLE */
 .title {
     text-align: center;
     font-size: 45px;
+    font-weight: bold;
     color: white;
     animation: pulse 1s ease-in-out 5;
 }
+
 @keyframes pulse {
     50% { text-shadow: 0 0 30px red; }
 }
@@ -48,6 +52,7 @@ body {
     height: 100%;
     z-index: 0;
 }
+
 .line {
     position: absolute;
     width: 2px;
@@ -55,6 +60,7 @@ body {
     background: rgba(0,255,0,0.2);
     animation: moveUp linear infinite;
 }
+
 @keyframes moveUp {
     from { transform: translateY(100%); }
     to { transform: translateY(-100%); }
@@ -68,6 +74,7 @@ body {
     justify-content: center;
     padding: 20px;
 }
+
 .container {
     width: 100%;
     max-width: 420px;
@@ -77,7 +84,7 @@ body {
     text-align: center;
 }
 
-/* INPUT */
+/* INPUTS */
 input, select {
     width: 100%;
     padding: 10px;
@@ -107,7 +114,7 @@ svg, canvas {
     width: 100%;
 }
 
-/* SECTIONS */
+/* SOFTWARE SECTION */
 .software-section {
     position: relative;
     z-index: 2;
@@ -116,12 +123,14 @@ svg, canvas {
     margin: auto;
     text-align: center;
 }
+
 .software-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
     gap: 15px;
     margin-top: 20px;
 }
+
 .card {
     background: rgba(0,0,0,0.85);
     padding: 15px;
@@ -129,12 +138,13 @@ svg, canvas {
     cursor: pointer;
     transition: 0.3s;
 }
+
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 0 15px lime;
 }
 
-/* FLOAT */
+/* FLOAT BUTTONS */
 .float-left {
     position: fixed;
     left: 10px;
@@ -144,13 +154,16 @@ svg, canvas {
     gap: 10px;
     z-index: 3;
 }
+
 .float-btn {
     background: red;
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 12px;
 }
 
+/* CONTACT */
 .contact-box {
     position: fixed;
     left: 10px;
@@ -159,8 +172,10 @@ svg, canvas {
     padding: 12px;
     border-radius: 10px;
     display: none;
+    z-index: 3;
 }
 
+/* WHATSAPP */
 .whatsapp {
     position: fixed;
     right: 15px;
@@ -170,8 +185,10 @@ svg, canvas {
     border-radius: 50%;
     box-shadow: 0 0 15px lime;
     cursor: pointer;
+    z-index: 3;
 }
 
+/* DONATION */
 .donation-panel {
     position: fixed;
     top:0;
@@ -188,13 +205,17 @@ svg, canvas {
 
 <body>
 
+<!-- TOP -->
 <div class="topbar">
     <div></div>
-    <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">TECH</div>
+    <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">
+        TECH
+    </div>
 </div>
 
 <div class="title">MARK TECH</div>
 
+<!-- BACKGROUND -->
 <div class="lines" id="lines"></div>
 
 <!-- GENERATOR -->
@@ -203,11 +224,13 @@ svg, canvas {
 
 <h3>Generate Barcode / QR</h3>
 
-<input type="text" id="text" placeholder="Enter text, link or image URL">
+<input type="text" id="text" placeholder="Enter text, number or link">
 
 <select id="format">
-<option value="CODE128">Barcode</option>
-<option value="QR">QR Code</option>
+<option value="CODE128">CODE128</option>
+<option value="CODE39">CODE39</option>
+<option value="EAN13">EAN13</option>
+<option value="QR">QR CODE</option>
 </select>
 
 <button onclick="generate()">Generate</button>
@@ -223,16 +246,16 @@ svg, canvas {
 <h2>Barcode Software</h2>
 
 <div class="software-grid">
-<div class="card" onclick="preset('OFFICE-123')">TBarCode Office</div>
-<div class="card" onclick="preset('DEV-456')">TBarCode/X</div>
-<div class="card" onclick="preset('SDK-789')">TBarCode SDK</div>
-<div class="card" onclick="preset('STUDIO-000')">Barcode Studio</div>
+<div class="card" onclick="preset('OFFICE-12345')">TBarCode Office</div>
+<div class="card" onclick="preset('DEV-67890')">TBarCode/X</div>
+<div class="card" onclick="preset('SDK-11223')">TBarCode SDK</div>
+<div class="card" onclick="preset('STUDIO-44556')">Barcode Studio</div>
 </div>
 </section>
 
 <!-- SOLUTIONS -->
 <section class="software-section">
-<h2>Solutions</h2>
+<h2>Software & Solutions</h2>
 
 <div class="software-grid">
 <div class="card" onclick="makeQR('https://manlung-tech-city.vercel.app/')">Web & Cloud</div>
@@ -247,12 +270,14 @@ svg, canvas {
 <div class="float-btn" onclick="toggleContact()">Contact</div>
 </div>
 
+<!-- CONTACT -->
 <div id="contactBox" class="contact-box">
 📞 +254724356178<br>
 💬 0724356178<br>
 📧 marklinochieng@gmail.com
 </div>
 
+<!-- WHATSAPP -->
 <div class="whatsapp" onclick="window.open('https://wa.me/254724356178')">💬</div>
 
 <!-- DONATE -->
@@ -264,21 +289,30 @@ svg, canvas {
 </div>
 
 <script>
-// MAIN GENERATOR
+// GENERATE
 function generate() {
     let val = document.getElementById("text").value;
     let type = document.getElementById("format").value;
 
-    if (!val) return alert("Enter something");
+    if (!val) return alert("Enter value");
 
-    if (type === "QR") {
+    if (type === "QR CODE") {
         makeQR(val);
-    } else {
-        JsBarcode("#barcode", val, {format:"CODE128"});
+        return;
     }
+
+    if (type === "EAN13" && !/^\d{12}$/.test(val)) {
+        alert("EAN13 requires 12 digits");
+        return;
+    }
+
+    JsBarcode("#barcode", val, {
+        format: type,
+        displayValue: true
+    });
 }
 
-// PRESET BARCODE
+// PRESET
 function preset(code) {
     JsBarcode("#barcode", code, {format:"CODE128"});
 }
@@ -298,7 +332,7 @@ let box=document.getElementById("contactBox");
 box.style.display=box.style.display==="block"?"none":"block";
 }
 
-// LINES
+// BACKGROUND LINES
 const c=document.getElementById("lines");
 for(let i=0;i<40;i++){
  let l=document.createElement("div");
