@@ -3,19 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mark Tech Barcode Generator</title>
+<title>MARK TECH</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
 <style>
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Orbitron', sans-serif;
     background: black;
     color: white;
+    overflow-x: hidden;
 }
 
-/* MATRIX */
+/* TITLE */
+.title {
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: red;
+    text-shadow: 0 0 10px red, 0 0 20px red;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px red; }
+    to { text-shadow: 0 0 30px red; }
+}
+
+/* BACKGROUND */
 canvas {
     position: fixed;
     top: 0;
@@ -23,61 +40,40 @@ canvas {
     z-index: -1;
 }
 
-/* NAV */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-}
-
-.tech-btn {
-    background: #00ff99;
-    padding: 8px 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* MAIN */
-.wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 40px 15px;
-}
-
+/* CONTAINER */
 .container {
-    width: 100%;
-    max-width: 420px;
-    background: rgba(0,0,0,0.75);
-    border-radius: 20px;
-    padding: 25px;
+    max-width: 400px;
+    margin: 40px auto;
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
+    border-radius: 15px;
     text-align: center;
-    box-shadow: 0 0 25px rgba(0,255,0,0.3);
 }
 
-h1 { color: #00ff99; }
-
+/* INPUTS */
 input, select {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
+    padding: 10px;
     margin: 10px 0;
-}
-
-button {
-    padding: 12px;
-    border-radius: 10px;
+    border-radius: 8px;
     border: none;
-    background: #00ff99;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 8px;
 }
 
+/* BUTTONS */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    background: lime;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* BARCODE */
 svg {
-    margin-top: 20px;
+    margin-top: 15px;
     background: white;
     padding: 10px;
     border-radius: 10px;
@@ -85,187 +81,147 @@ svg {
 }
 
 /* FLOAT BUTTONS */
-.float-left {
+.donate-btn {
     position: fixed;
-    left: 15px;
+    left: 10px;
     bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.float-btn {
-    background: #00ff99;
+    background: red;
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 12px;
-    text-align: center;
 }
 
-/* WHATSAPP */
+.contact-box {
+    position: fixed;
+    left: 10px;
+    bottom: 70px;
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border-radius: 10px;
+    display: none;
+}
+
 .whatsapp {
     position: fixed;
     right: 15px;
     bottom: 20px;
-    background: limegreen;
+    background: green;
     padding: 12px;
     border-radius: 50%;
     box-shadow: 0 0 15px lime;
     cursor: pointer;
 }
 
-/* POPUP */
-.popup {
-    display: none;
+/* DONATION PANEL */
+.donation-panel {
     position: fixed;
-    bottom: 80px;
-    left: 15px;
-    background: rgba(0,0,0,0.9);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-/* PAGES */
-.page {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
     display: none;
     padding: 20px;
 }
 
-.active {
-    display: block;
+/* GREEN LINES */
+.lines {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.line {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: rgba(0,255,0,0.2);
+    animation: moveUp 5s linear infinite;
+}
+
+@keyframes moveUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(-100%); }
 }
 </style>
 </head>
 
 <body>
 
+<div class="title">MARK TECH</div>
+
 <canvas id="matrix"></canvas>
 
-<div class="topbar">
-    <h3>⚡ Mark Tech</h3>
-    <div class="tech-btn" onclick="goTech()">TECH IT</div>
-</div>
+<div class="lines" id="lines"></div>
 
-<!-- MAIN PAGE -->
-<div id="mainPage" class="active">
-<div class="wrapper">
 <div class="container">
+    <h3>Barcode Generator</h3>
 
-<h1>Barcode Generator</h1>
+    <input type="text" id="text" placeholder="Enter text">
 
-<input type="text" id="text" placeholder="Enter text">
-<select id="format">
-<option value="CODE128">CODE128</option>
-<option value="EAN13">EAN-13</option>
-</select>
+    <select id="format">
+        <option value="CODE128">CODE128</option>
+        <option value="EAN13">EAN13</option>
+    </select>
 
-<button onclick="generateBarcode()">Generate</button>
-<button onclick="downloadPNG()">Download</button>
+    <button onclick="generate()">Generate</button>
 
-<svg id="barcode"></svg>
-
+    <svg id="barcode"></svg>
 </div>
+
+<!-- FLOAT -->
+<div class="donate-btn" onclick="openDonate()">Donate</div>
+
+<div class="contact-box" id="contactBox">
+    📞 +254724356178<br>
+    💬 0724356178<br>
+    📧 marklinochieng@gmail.com
 </div>
-</div>
+
+<div class="whatsapp" onclick="window.open('https://wa.me/254724356178')">💬</div>
 
 <!-- DONATION PAGE -->
-<div id="donatePage" class="page">
-<h2>💰 Support Mark Tech</h2>
+<div class="donation-panel" id="donatePanel">
+    <h2>Support Mark Tech</h2>
 
-<p><b>KCB BANK</b><br>
-Paybill: 522522<br>
-Account: 1336980125</p>
+    <p>KCB BANK<br>Paybill: 522522<br>Account: 1336980125</p>
 
-<p><b>FAMILY BANK</b><br>
-Paybill: 222111<br>
-Account: 085000113030</p>
+    <p>FAMILY BANK<br>Paybill: 222111<br>Account: 085000113030</p>
 
-<button onclick="goHome()">Back</button>
+    <button onclick="closeDonate()">Back</button>
 </div>
-
-<!-- FLOAT BUTTONS -->
-<div class="float-left">
-    <div class="float-btn" onclick="openDonate()">Donate</div>
-    <div class="float-btn" onclick="toggleContact()">Contact</div>
-</div>
-
-<!-- CONTACT POPUP -->
-<div id="contactBox" class="popup">
-    <p>📞 Call: +254724356178</p>
-    <p>💬 WhatsApp: 0724356178</p>
-    <p>📧 Email: marklinochieng@gmail.com</p>
-</div>
-
-<!-- WHATSAPP -->
-<div class="whatsapp" onclick="openWhatsApp()">💬</div>
 
 <script>
-// NAVIGATION
-function openDonate() {
-    document.getElementById("mainPage").classList.remove("active");
-    document.getElementById("donatePage").classList.add("active");
-}
-
-function goHome() {
-    document.getElementById("donatePage").classList.remove("active");
-    document.getElementById("mainPage").classList.add("active");
-}
-
-// CONTACT
-function toggleContact() {
-    let box = document.getElementById("contactBox");
-    box.style.display = box.style.display === "block" ? "none" : "block";
-}
-
-// WHATSAPP
-function openWhatsApp() {
-    window.open("https://wa.me/254724356178");
-}
-
-// TECH SITE
-function goTech() {
-    window.open("https://manlung-tech-city.vercel.app/");
-}
-
 // BARCODE
-function generateBarcode() {
-    let value = document.getElementById("text").value;
+function generate() {
+    let val = document.getElementById("text").value;
     let format = document.getElementById("format").value;
 
-    if (!value) return alert("Enter value");
+    if (!val) return alert("Enter value");
 
-    JsBarcode("#barcode", value, {
+    JsBarcode("#barcode", val, {
         format: format,
         displayValue: true
     });
 }
 
-// DOWNLOAD
-function downloadPNG() {
-    let svg = document.getElementById("barcode");
-    let data = new XMLSerializer().serializeToString(svg);
-    let canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    let img = new Image();
-
-    img.onload = function () {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-
-        let link = document.createElement("a");
-        link.download = "barcode.png";
-        link.href = canvas.toDataURL();
-        link.click();
-    };
-
-    img.src = "data:image/svg+xml;base64," + btoa(data);
+// DONATE
+function openDonate() {
+    document.getElementById("donatePanel").style.display = "block";
+}
+function closeDonate() {
+    document.getElementById("donatePanel").style.display = "none";
 }
 
-// MATRIX
+// CONTACT TOGGLE
+document.querySelector(".donate-btn").addEventListener("dblclick", () => {
+    let box = document.getElementById("contactBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+});
+
+// MATRIX (SLOWED)
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -273,15 +229,15 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const letters = "010101";
-const fontSize = 14;
+const fontSize = 16;
 const columns = canvas.width / fontSize;
 const drops = Array(Math.floor(columns)).fill(1);
 
 function draw() {
-    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#00ff99";
+    ctx.fillStyle = "#00ff00";
     ctx.font = fontSize + "px monospace";
 
     for (let i = 0; i < drops.length; i++) {
@@ -292,8 +248,17 @@ function draw() {
         drops[i]++;
     }
 }
+setInterval(draw, 80);
 
-setInterval(draw, 35);
+// GREEN LINES
+const linesContainer = document.getElementById("lines");
+for (let i = 0; i < 30; i++) {
+    let line = document.createElement("div");
+    line.className = "line";
+    line.style.left = Math.random() * 100 + "%";
+    line.style.animationDuration = (3 + Math.random() * 5) + "s";
+    linesContainer.appendChild(line);
+}
 </script>
 
 </body>
