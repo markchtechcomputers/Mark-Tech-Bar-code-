@@ -549,6 +549,64 @@ svg, canvas {
     box-shadow: 0 0 20px lime;
 }
 
+/* VERIFICATION */
+.verification-section {
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    margin: 20px 0;
+    border: 2px solid cyan;
+    box-shadow: 0 0 30px cyan;
+}
+
+.verification-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.verification-form input {
+    padding: 12px;
+    border: 2px solid cyan;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    width: 150px;
+}
+
+.verification-form input:focus {
+    outline: none;
+    box-shadow: 0 0 10px cyan;
+}
+
+.verify-btn {
+    background: cyan;
+    color: black;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.verify-btn:hover {
+    box-shadow: 0 0 15px cyan;
+}
+
+.verification-status {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 20px;
+}
+
 /* ADS */
 .ads-section {
     position: relative;
@@ -948,6 +1006,17 @@ svg, canvas {
 <button class="premium-btn" onclick="openPaymentModal()">Upgrade to Premium - $9.99/month</button>
 </section>
 
+<!-- PAYMENT VERIFICATION -->
+<section class="verification-section">
+<h2>🔐 Verify Payment & Access Premium</h2>
+<p>Already made a payment? Enter your 6-digit access code to unlock premium features.</p>
+<div class="verification-form">
+  <input type="text" id="accessCode" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}">
+  <button class="verify-btn" onclick="verifyAccessCode()">Verify & Access</button>
+</div>
+<div id="verification-status" class="verification-status"></div>
+</section>
+
 <!-- ABOUT -->
 <section class="about-section">
 <h2>About Mark Tech</h2>
@@ -1009,6 +1078,7 @@ svg, canvas {
 <div class="modal-content payment-modal">
   <button class="close-btn" onclick="closePaymentModal()">✕</button>
   <h2>Complete Your Purchase</h2>
+  <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;">After payment, you'll receive a 6-digit access code. Send payment proof via WhatsApp to activate your Premium account.</p>
   <div class="payment-info">
     <p><strong>Premium Subscription</strong></p>
     <p class="price">$9.99/month</p>
@@ -1213,6 +1283,13 @@ function upgradePremium() {
 
 // SHOW PREMIUM DETAILS
 function showPremiumDetails(feature) {
+    let hasAccess = localStorage.getItem('premiumAccess') === 'true';
+    
+    if (!hasAccess) {
+        alert('🔒 This is a Premium feature!\n\nUpgrade to Premium for $9.99/month to access:\n• Unlimited barcode generations\n• Batch processing\n• Priority support\n• API access\n\nClick "Upgrade to Premium" to get started!');
+        return;
+    }
+    
     let details = {
         unlimited: {
             title: '♾️ Unlimited Generations',
@@ -1261,7 +1338,20 @@ function processPayment(method) {
     };
     
     if (method === 'mpesa') {
-        alert('Please send $9.99 to M-Pesa: 0724356178\nAfter payment, contact: marklinochieng@gmail.com with proof of payment.');
+        // Generate 6-digit access code for M-Pesa
+        let accessCode = Math.floor(100000 + Math.random() * 900000);
+        
+        let message = `Please send $9.99 to M-Pesa: 0724356178\n\nYour Access Code: ${accessCode}\n\nAfter payment, send screenshot/proof via WhatsApp with this code to activate Premium.`;
+        
+        // Create WhatsApp message for proof submission
+        let whatsappMessage = `Payment Proof for Premium Access. Access Code: ${accessCode}. Attaching payment screenshot.`;
+        let whatsappUrl = `https://wa.me/254724356178?text=${encodeURIComponent(whatsappMessage)}`;
+        
+        alert(message + '\n\nClick OK to open WhatsApp for proof submission.');
+        window.open(whatsappUrl, '_blank');
+        
+        // Store temporarily
+        localStorage.setItem('pendingAccessCode', accessCode);
         return;
     }
     
@@ -1282,8 +1372,103 @@ function completePayment() {
         return;
     }
     
-    alert('Thank you for your payment, ' + name + '!\nYou will receive a confirmation email at ' + email);
+    // Generate 6-digit access code
+    let accessCode = Math.floor(100000 + Math.random() * 900000);
+    
+    // Create WhatsApp message
+    let whatsappMessage = `Hi Mark Tech Support! I've completed payment for Premium subscription. My name: ${name}, Email: ${email}, Access Code: ${accessCode}. Please send payment proof/screenshot to activate my account.`;
+    let whatsappUrl = `https://wa.me/254724356178?text=${encodeURIComponent(whatsappMessage)}`;
+    
+    // Show success message with instructions
+    alert(`Payment initiated successfully!\n\nYour Access Code: ${accessCode}\n\nPlease send payment proof/screenshot via WhatsApp to activate your Premium account.\n\nClick OK to open WhatsApp with pre-filled message.`);
+    
+    // Open WhatsApp
+    window.open(whatsappUrl, '_blank');
+    
+    // Close payment modal
     closePaymentModal();
+    
+    // Store access code temporarily (in a real app, this would be sent to server)
+    localStorage.setItem('pendingAccessCode', accessCode);
+    localStorage.setItem('pendingUserInfo', JSON.stringify({name, email}));
+}
+
+function verifyAccessCode() {
+    let enteredCode = document.getElementById('accessCode').value;
+    let statusDiv = document.getElementById('verification-status');
+    
+    if (!enteredCode || enteredCode.length !== 6) {
+        statusDiv.innerHTML = '<span style="color: red;">❌ Please enter a valid 6-digit code</span>';
+        return;
+    }
+    
+    // Check against stored codes (in a real app, this would verify with server)
+    let storedCodes = JSON.parse(localStorage.getItem('verifiedCodes') || '[]');
+    let pendingCode = localStorage.getItem('pendingAccessCode');
+    
+    if (enteredCode === pendingCode || storedCodes.includes(enteredCode)) {
+        // Mark as verified
+        if (!storedCodes.includes(enteredCode)) {
+            storedCodes.push(enteredCode);
+            localStorage.setItem('verifiedCodes', JSON.stringify(storedCodes));
+        }
+        
+        // Grant premium access
+        localStorage.setItem('premiumAccess', 'true');
+        
+        statusDiv.innerHTML = '<span style="color: lime;">✅ Access granted! Premium features unlocked.</span>';
+        
+        // Clear the input
+        document.getElementById('accessCode').value = '';
+        
+        // Update UI to show premium access
+        updatePremiumStatus();
+        
+        // Show success message
+        setTimeout(() => {
+            alert('🎉 Welcome to Premium!\n\nYou now have access to all premium features:\n• Unlimited barcode generations\n• Batch processing\n• Priority support\n• API access');
+        }, 500);
+        
+    } else {
+        statusDiv.innerHTML = '<span style="color: red;">❌ Invalid code. Please check and try again.</span>';
+    }
+}
+
+function updatePremiumStatus() {
+    let hasAccess = localStorage.getItem('premiumAccess') === 'true';
+    
+    if (hasAccess) {
+        // Update premium button text
+        let premiumBtn = document.querySelector('.premium-btn');
+        if (premiumBtn) {
+            premiumBtn.textContent = '✅ Premium Active';
+            premiumBtn.disabled = true;
+            premiumBtn.style.background = 'lime';
+        }
+        
+        // Enable premium features
+        document.querySelectorAll('.premium-card').forEach(card => {
+            card.style.opacity = '1';
+            card.style.pointerEvents = 'auto';
+            card.style.borderColor = 'lime';
+        });
+    } else {
+        // Show locked state
+        document.querySelectorAll('.premium-card').forEach(card => {
+            card.style.opacity = '0.6';
+            card.style.pointerEvents = 'auto'; // Keep clickable to show upgrade message
+            card.style.borderColor = 'red';
+            // Add lock icon if not already present
+            if (!card.querySelector('.lock-icon')) {
+                let lockIcon = document.createElement('div');
+                lockIcon.className = 'lock-icon';
+                lockIcon.textContent = '🔒';
+                lockIcon.style.fontSize = '20px';
+                lockIcon.style.marginBottom = '5px';
+                card.insertBefore(lockIcon, card.firstChild);
+            }
+        });
+    }
 }
 
 // FAQ TOGGLE
@@ -1346,6 +1531,9 @@ window.addEventListener('load', function() {
     let audio = document.getElementById('bg-music');
     let select = document.getElementById('song-select');
     audio.src = select.value;
+    
+    // Check premium status on page load
+    updatePremiumStatus();
 });
 </script>
 
