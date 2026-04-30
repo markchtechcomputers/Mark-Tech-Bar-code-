@@ -91,12 +91,34 @@ body.light-theme .glowing-text {
     top: 60px;
     right: 10px;
     background: rgba(0,0,0,0.9);
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     display: none;
     z-index: 10;
     border: 1px solid lime;
     box-shadow: 0 0 15px lime;
+}
+
+.song-selector {
+    margin-bottom: 10px;
+}
+
+.song-selector label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.song-selector select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+.music-controls {
+    display: flex;
+    gap: 5px;
 }
 
 .music-panel button {
@@ -281,7 +303,7 @@ svg, canvas {
     display:none;
     justify-content: center;
     align-items: center;
-    z-index:100;
+    z-index:150;
 }
 
 /* WHATSAPP */
@@ -308,7 +330,7 @@ svg, canvas {
     display:none;
     justify-content: center;
     align-items: center;
-    z-index:100;
+    z-index:120;
 }
 
 .modal-content {
@@ -320,6 +342,72 @@ svg, canvas {
     text-align: center;
     max-width: 500px;
     width: 90%;
+    position: relative;
+}
+
+.contact-content {
+    max-width: 700px;
+}
+
+.contact-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.contact-method {
+    background: rgba(0,0,0,0.8);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid cyan;
+}
+
+.contact-method h3 {
+    margin: 0 0 10px 0;
+}
+
+.contact-method button {
+    background: cyan;
+    color: black;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.contact-method button:hover {
+    box-shadow: 0 0 10px cyan;
+}
+
+.contact-form {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid lime;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid lime;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-family: Arial;
+}
+
+.contact-form button {
+    background: lime;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
 }
 
 .donation-details {
@@ -378,6 +466,288 @@ svg, canvas {
     from { text-shadow: 0 0 10px lime; }
     to { text-shadow: 0 0 20px lime, 0 0 30px lime, 0 0 40px lime; }
 }
+
+/* ABOUT */
+.about-section {
+    position: relative;
+    z-index: 2;
+    padding: 60px 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px lime;
+}
+
+/* PREMIUM */
+.premium-section {
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    margin-top: 20px;
+    border: 2px solid lime;
+    box-shadow: 0 0 30px lime;
+}
+
+.premium-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.premium-card {
+    background: rgba(0,0,0,0.9);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid lime;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.premium-icon {
+    font-size: 30px;
+}
+
+.premium-title {
+    text-align: center;
+}
+
+.premium-card:hover {
+    box-shadow: 0 0 15px lime;
+    transform: translateY(-5px);
+}
+
+.premium-btn {
+    background: lime;
+    color: black;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.premium-btn:hover {
+    box-shadow: 0 0 20px lime;
+}
+
+/* ADS */
+.ads-section {
+    position: relative;
+    z-index: 2;
+    padding: 30px 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid orange;
+}
+
+.ad-placeholder {
+    background: rgba(255, 165, 0, 0.2);
+    padding: 30px;
+    border-radius: 10px;
+    border: 2px dashed orange;
+    font-size: 16px;
+    color: orange;
+}
+
+/* MODAL OVERLAY */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* PREMIUM DETAILS MODAL */
+.premium-details {
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* PAYMENT MODAL */
+.payment-modal {
+    max-width: 500px;
+}
+
+.payment-info {
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 1px solid lime;
+}
+
+.price {
+    font-size: 32px;
+    font-weight: bold;
+    color: lime;
+    margin: 10px 0;
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment-btn {
+    background: rgba(0,255,0,0.2);
+    border: 1px solid lime;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.payment-btn:hover {
+    background: lime;
+    color: black;
+}
+
+#payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#payment-form input {
+    padding: 10px;
+    border: 1px solid lime;
+    border-radius: 5px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+}
+
+#payment-form button {
+    background: lime;
+    color: black;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* FAQ */
+.faq-section {
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: auto;
+    margin-top: 20px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 10px;
+    border: 1px solid lime;
+}
+
+.faq-item {
+    margin: 15px 0;
+}
+
+.faq-btn {
+    width: 100%;
+    background: rgba(0,0,0,0.9);
+    border: 1px solid lime;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.faq-btn:hover {
+    background: lime;
+    color: black;
+}
+
+.faq-content {
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+    margin-top: 10px;
+    border-left: 3px solid lime;
+    border-radius: 5px;
+}
+
+/* TESTIMONIALS */
+.testimonials-section {
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    border-radius: 10px;
+    border: 1px solid cyan;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.testimonial-card {
+    background: rgba(0,0,0,0.9);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid cyan;
+    box-shadow: 0 0 10px cyan;
+    transition: 0.3s;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px cyan;
+}
 </style>
 </head>
 
@@ -385,10 +755,10 @@ svg, canvas {
 
 <!-- TOP -->
 <div class="topbar">
-    <div></div>
     <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">
         TECH
     </div>
+    <div></div>
     <div class="top-controls">
         <div class="music-icon" onclick="toggleMusicPanel()">🎵</div>
         <div class="theme-btn" onclick="toggleTheme()">🌙</div>
@@ -399,10 +769,23 @@ svg, canvas {
 
 <!-- MUSIC PANEL -->
 <div id="music-panel" class="music-panel">
-    <button onclick="playPauseMusic()">▶️</button>
-    <button onclick="skipMusic(-10)">⏪</button>
-    <button onclick="skipMusic(10)">⏩</button>
-    <button onclick="closeMusicPanel()">✕</button>
+    <div class="song-selector">
+        <label for="song-select">Select Song:</label>
+        <select id="song-select" onchange="changeMusic()">
+            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Okoth Jarapogi Mix</option>
+            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Electronic Vibes</option>
+            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Ambient Dreams</option>
+            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">Tech Groove</option>
+            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3">Digital Journey</option>
+            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3">Future Beats</option>
+        </select>
+    </div>
+    <div class="music-controls">
+        <button onclick="playPauseMusic()">▶️</button>
+        <button onclick="skipMusic(-10)">⏪</button>
+        <button onclick="skipMusic(10)">⏩</button>
+        <button onclick="closeMusicPanel()">✕</button>
+    </div>
 </div>
 
 <!-- BACKGROUND -->
@@ -474,12 +857,33 @@ svg, canvas {
 
 <!-- CONTACT -->
 <div id="contactModal" class="contact-modal">
-<div class="modal-content">
+<div class="modal-content contact-content">
+<button class="close-btn" onclick="closeContact()">✕</button>
 <h2>Contact Us</h2>
-<p>📞 Phone: +254724356178</p>
-<p>💬 WhatsApp: 0724356178</p>
-<p>📧 Email: marklinochieng@gmail.com</p>
-<button onclick="closeContact()">Close</button>
+<div class="contact-methods">
+  <div class="contact-method">
+    <h3>📞 Phone</h3>
+    <p><strong>+254724356178</strong></p>
+    <button onclick="window.location.href='tel:+254724356178'">Call Now</button>
+  </div>
+  <div class="contact-method">
+    <h3>💬 WhatsApp</h3>
+    <p><strong>0724356178</strong></p>
+    <button onclick="window.open('https://wa.me/254724356178')">Message on WhatsApp</button>
+  </div>
+  <div class="contact-method">
+    <h3>📧 Email</h3>
+    <p><strong>marklinochieng@gmail.com</strong></p>
+    <button onclick="window.location.href='mailto:marklinochieng@gmail.com'">Send Email</button>
+  </div>
+</div>
+<div class="contact-form">
+  <h3>Send us a message:</h3>
+  <input type="text" id="contact-name" placeholder="Your Name">
+  <input type="email" id="contact-email" placeholder="Your Email">
+  <textarea id="contact-message" placeholder="Your Message" rows="4"></textarea>
+  <button onclick="sendMessage()">Send Message</button>
+</div>
 </div>
 </div>
 
@@ -520,12 +924,112 @@ svg, canvas {
     Your browser does not support the audio element.
 </audio>
 
+<!-- PREMIUM -->
+<section class="premium-section">
+<h2>🌟 Premium Features</h2>
+<div class="premium-grid">
+<div class="premium-card" onclick="showPremiumDetails('unlimited')">
+  <div class="premium-icon">♾️</div>
+  <div class="premium-title">Unlimited Generations</div>
+</div>
+<div class="premium-card" onclick="showPremiumDetails('batch')">
+  <div class="premium-icon">📦</div>
+  <div class="premium-title">Batch Processing</div>
+</div>
+<div class="premium-card" onclick="showPremiumDetails('support')">
+  <div class="premium-icon">🎯</div>
+  <div class="premium-title">Priority Support</div>
+</div>
+<div class="premium-card" onclick="showPremiumDetails('api')">
+  <div class="premium-icon">⚙️</div>
+  <div class="premium-title">API Access</div>
+</div>
+</div>
+<button class="premium-btn" onclick="openPaymentModal()">Upgrade to Premium - $9.99/month</button>
+</section>
+
 <!-- ABOUT -->
 <section class="about-section">
 <h2>About Mark Tech</h2>
 <p class="glowing-text">Professional barcode and QR code generation tool. Create custom barcodes for retail, inventory, and more. Advanced features for customization and high-quality output.</p>
 <p class="glowing-text">Developed by Mark Ochieng - Expert in tech solutions.</p>
 </section>
+
+<!-- ADS -->
+<section class="ads-section">
+<h3>Sponsored Content</h3>
+<div class="ad-placeholder">🎯 Your Ad Here - Contact for advertising opportunities</div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+<h2>Frequently Asked Questions</h2>
+<div class="faq-item">
+  <button class="faq-btn" onclick="toggleFAQ(this)">❓ How do I generate a barcode?</button>
+  <div class="faq-content" style="display: none;">Simply enter your text or number and select the barcode format. Click Generate to create your barcode instantly!</div>
+</div>
+<div class="faq-item">
+  <button class="faq-btn" onclick="toggleFAQ(this)">❓ Can I download my barcode?</button>
+  <div class="faq-content" style="display: none;">Yes! After generating, click the Download button to save your barcode as an SVG or PNG file.</div>
+</div>
+<div class="faq-item">
+  <button class="faq-btn" onclick="toggleFAQ(this)">❓ What's included in Premium?</button>
+  <div class="faq-content" style="display: none;">Premium includes unlimited generations, batch processing, priority support, and API access for your applications.</div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+<h2>What Users Say</h2>
+<div class="testimonials-grid">
+<div class="testimonial-card">
+  <p>"Best barcode generator I've used! Simple and powerful." - John D.</p>
+</div>
+<div class="testimonial-card">
+  <p>"The premium features are worth every penny." - Sarah M.</p>
+</div>
+<div class="testimonial-card">
+  <p>"Excellent customer support and fast API!" - Mike T.</p>
+</div>
+</div>
+</section>
+
+<!-- PREMIUM DETAILS MODAL -->
+<div id="premiumDetailsModal" class="modal-overlay">
+<div class="modal-content premium-details">
+  <button class="close-btn" onclick="closePremiumDetails()">✕</button>
+  <h2 id="detail-title">Feature Details</h2>
+  <div id="detail-content"></div>
+  <button onclick="openPaymentModal()" class="premium-btn">Get Premium Access</button>
+</div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" class="modal-overlay">
+<div class="modal-content payment-modal">
+  <button class="close-btn" onclick="closePaymentModal()">✕</button>
+  <h2>Complete Your Purchase</h2>
+  <div class="payment-info">
+    <p><strong>Premium Subscription</strong></p>
+    <p class="price">$9.99/month</p>
+  </div>
+  
+  <div class="payment-methods">
+    <h3>Select Payment Method:</h3>
+    <button class="payment-btn" onclick="processPayment('card')">💳 Credit/Debit Card</button>
+    <button class="payment-btn" onclick="processPayment('mpesa')">📱 M-Pesa (0724356178)</button>
+    <button class="payment-btn" onclick="processPayment('paypal')">🔵 PayPal</button>
+    <button class="payment-btn" onclick="processPayment('crypto')">₿ Cryptocurrency</button>
+  </div>
+  
+  <div id="payment-form" style="display: none;">
+    <input type="text" placeholder="Full Name" id="payer-name">
+    <input type="email" placeholder="Email Address" id="payer-email">
+    <input type="text" placeholder="Card Number (for demo)" id="card-number">
+    <button onclick="completePayment()">Complete Payment</button>
+  </div>
+</div>
+</div>
 
 <script>
 // GENERATE
@@ -694,6 +1198,136 @@ function closeMusicPanel() {
     document.getElementById("music-panel").style.display = "none";
 }
 
+// CHANGE MUSIC
+function changeMusic() {
+    let audio = document.getElementById("bg-music");
+    let select = document.getElementById("song-select");
+    audio.src = select.value;
+    audio.play();
+}
+
+// PREMIUM UPGRADE
+function upgradePremium() {
+    alert("Thank you for your interest! Premium subscription coming soon. Contact: marklinochieng@gmail.com");
+}
+
+// SHOW PREMIUM DETAILS
+function showPremiumDetails(feature) {
+    let details = {
+        unlimited: {
+            title: '♾️ Unlimited Generations',
+            content: 'Generate unlimited barcodes and QR codes without any restrictions. Perfect for growing businesses!'
+        },
+        batch: {
+            title: '📦 Batch Processing',
+            content: 'Process multiple barcodes at once. Upload CSV files and generate thousands of codes in seconds!'
+        },
+        support: {
+            title: '🎯 Priority Support',
+            content: '24/7 priority email and chat support. Get responses within 1 hour from our dedicated team.'
+        },
+        api: {
+            title: '⚙️ API Access',
+            content: 'Integrate our barcode generator directly into your applications with our powerful REST API.'
+        }
+    };
+    
+    document.getElementById('detail-title').textContent = details[feature].title;
+    document.getElementById('detail-content').textContent = details[feature].content;
+    document.getElementById('premiumDetailsModal').style.display = 'flex';
+}
+
+function closePremiumDetails() {
+    document.getElementById('premiumDetailsModal').style.display = 'none';
+}
+
+// PAYMENT FUNCTIONS
+function openPaymentModal() {
+    closePremiumDetails();
+    document.getElementById('paymentModal').style.display = 'flex';
+    document.getElementById('payment-form').style.display = 'none';
+}
+
+function closePaymentModal() {
+    document.getElementById('paymentModal').style.display = 'none';
+}
+
+function processPayment(method) {
+    let methods = {
+        card: 'Credit/Debit Card',
+        mpesa: 'M-Pesa (0724356178)',
+        paypal: 'PayPal',
+        crypto: 'Cryptocurrency'
+    };
+    
+    if (method === 'mpesa') {
+        alert('Please send $9.99 to M-Pesa: 0724356178\nAfter payment, contact: marklinochieng@gmail.com with proof of payment.');
+        return;
+    }
+    
+    if (method === 'paypal') {
+        alert('Redirecting to PayPal payment...\n(Integration coming soon)');
+        return;
+    }
+    
+    document.getElementById('payment-form').style.display = 'flex';
+}
+
+function completePayment() {
+    let name = document.getElementById('payer-name').value;
+    let email = document.getElementById('payer-email').value;
+    
+    if (!name || !email) {
+        alert('Please fill all fields');
+        return;
+    }
+    
+    alert('Thank you for your payment, ' + name + '!\nYou will receive a confirmation email at ' + email);
+    closePaymentModal();
+}
+
+// FAQ TOGGLE
+function toggleFAQ(element) {
+    let content = element.nextElementSibling;
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        element.textContent = element.textContent.replace('❓', '❌');
+    } else {
+        content.style.display = 'none';
+        element.textContent = element.textContent.replace('❌', '❓');
+    }
+}
+
+// SEND MESSAGE
+function sendMessage() {
+    let name = document.getElementById('contact-name').value;
+    let email = document.getElementById('contact-email').value;
+    let message = document.getElementById('contact-message').value;
+    
+    if (!name || !email || !message) {
+        alert('Please fill all fields');
+        return;
+    }
+    
+    // In a real application, this would send to a server
+    alert('Thank you for your message, ' + name + '!\nWe will contact you at ' + email + ' soon.');
+    
+    // Clear form
+    document.getElementById('contact-name').value = '';
+    document.getElementById('contact-email').value = '';
+    document.getElementById('contact-message').value = '';
+}
+
+// CONTACT FUNCTIONS
+function toggleContact() {
+    let modal = document.getElementById('contactModal');
+    modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function closeContact() {
+    document.getElementById('contactModal').style.display = 'none';
+}
+
 // BACKGROUND LINES
 const c=document.getElementById("lines");
 for(let i=0;i<40;i++){
@@ -706,8 +1340,16 @@ for(let i=0;i<40;i++){
 
 // LOAD HISTORY ON START
 loadHistory();
+
+// PRELOAD MUSIC
+window.addEventListener('load', function() {
+    let audio = document.getElementById('bg-music');
+    let select = document.getElementById('song-select');
+    audio.src = select.value;
+});
 </script>
 
 </body>
 </html>
+
 
