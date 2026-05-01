@@ -56,10 +56,66 @@
         .title-section h1 { font-size: 3.5rem; font-weight: 800; text-shadow: 0 0 20px #00ff88, 0 0 40px #00ccff; letter-spacing: 2px; }
         .title-section p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
         
-        /* Cards */
-        .split-generator { display: flex; flex-wrap: wrap; gap: 30px; max-width: 1400px; margin: 30px auto; padding: 0 28px; }
-        .glass-card { background: rgba(10, 20, 35, 0.85); backdrop-filter: blur(10px); border-radius: 36px; padding: 28px; border: 1px solid rgba(0,255,100,0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.3); transition: 0.3s; }
+        /* BALANCED SPLIT: BARCODE CONTROLS LEFT, OUTPUT RIGHT */
+        .barcode-balanced-section {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 28px;
+        }
+        .split-control-output {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .controls-card {
+            flex: 1;
+            min-width: 280px;
+        }
+        .output-card {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            background: rgba(10, 20, 35, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 36px;
+            padding: 28px;
+            border: 1px solid rgba(0,255,100,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            height: 100%;
+        }
         body.light .glass-card { background: rgba(255,255,255,0.9); border-color: #1e88e5; }
+        
+        .barcode-preview-area {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 30px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+        }
+        .barcode-preview-area svg, .barcode-preview-area canvas {
+            max-width: 100%;
+            background: white;
+            border-radius: 16px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .action-buttons button {
+            flex: 1;
+            margin-top: 0;
+        }
+        
         .feature-grid { display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
         .feature-btn { background: linear-gradient(135deg, #1f2a48, #162030); padding: 14px 20px; border-radius: 60px; font-weight: 700; text-align: center; flex: 1; cursor: pointer; border: 1px solid #00ff8855; transition: 0.2s; }
         .feature-btn:hover { transform: translateY(-3px); background: #00ff88; color: #000; }
@@ -67,7 +123,6 @@
         body.light input, body.light select, body.light textarea { background: #f0f2f5; color: #111; border: 1px solid #ccc; }
         button { background: linear-gradient(135deg, #00ff88, #00ccff); color: #000; font-weight: 800; padding: 12px; border-radius: 60px; cursor: pointer; width: 100%; margin-top: 10px; border: none; transition: 0.2s; }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,255,136,0.4); }
-        .barcode-area { background: #ffffff; border-radius: 28px; padding: 24px; text-align: center; margin-top: 20px; }
         .why-section, .it-support-section { max-width: 1400px; margin: 40px auto; padding: 0 28px; }
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 25px; margin-top: 25px; }
         .info-card { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border-radius: 28px; padding: 28px; border-left: 5px solid #00ff88; transition: 0.3s; }
@@ -78,7 +133,7 @@
         .modal-overlay { position: fixed; top:0;left:0;width:100%;height:100%; background: rgba(0,0,0,0.97); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: #0f172a; padding: 32px; border-radius: 40px; max-width: 500px; width: 90%; border: 2px solid #00ff88; position: relative; }
         .float-wa { position: fixed; right: 28px; bottom: 30px; background: #25D366; border-radius: 60px; padding: 14px 24px; font-weight: bold; cursor: pointer; z-index: 99; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
-        @media (max-width:800px){ .title-section h1 { font-size: 2rem; } .brand-text { font-size: 1.2rem; } }
+        @media (max-width:800px){ .title-section h1 { font-size: 2rem; } .brand-text { font-size: 1.2rem; } .split-control-output { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -107,23 +162,56 @@
     </div>
     <div class="title-section"><h1>MARK TECH · BARCODE API STUDIO</h1><p>Next-Generation Barcode Generation & API Suite</p></div>
 
-    <div class="split-generator">
-        <div class="left-panel"><div class="glass-card">
-            <h2>📡 Generate Barcode / QR</h2>
-            <input type="text" id="inputData" placeholder="Text, URL, or Product ID" value="MARK-TECH-PRO">
-            <select id="barcodeType"><option value="CODE128">CODE128 (High Density)</option><option value="QR">QR CODE (Smart Link)</option><option value="EAN13">EAN13 (Retail)</option></select>
-            <div style="display:flex; gap:12px;"><button onclick="generateCode()">✨ Generate</button><button onclick="downloadOutput()">💾 Download</button></div>
-            <div class="barcode-area"><svg id="barcodeSvg" style="width:100%;"></svg><canvas id="qrCanvas" style="width:100%; display:none;"></canvas></div>
-            <button onclick="saveToHistory()">📁 Save to History</button>
+    <!-- BALANCED BARCODE SECTION: CONTROLS LEFT, OUTPUT RIGHT -->
+    <div class="barcode-balanced-section">
+        <div class="split-control-output">
+            <!-- LEFT SIDE: Controls -->
+            <div class="controls-card">
+                <div class="glass-card">
+                    <h2>📡 Barcode Controls</h2>
+                    <input type="text" id="inputData" placeholder="Text, URL, or Product ID" value="MARK-TECH-PRO">
+                    <select id="barcodeType">
+                        <option value="CODE128">CODE128 (High Density)</option>
+                        <option value="QR">QR CODE (Smart Link)</option>
+                        <option value="EAN13">EAN13 (Retail)</option>
+                        <option value="CODE39">CODE39</option>
+                    </select>
+                    <div class="action-buttons">
+                        <button onclick="generateCode()">✨ Generate</button>
+                        <button onclick="downloadOutput()">💾 Download</button>
+                        <button onclick="saveToHistory()">📁 Save</button>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button onclick="shareOutput()">📤 Share</button>
+                        <button onclick="printOutput()">🖨️ Print</button>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT SIDE: Generated Output Preview -->
+            <div class="output-card">
+                <div class="glass-card">
+                    <h3>🎯 Generated Output</h3>
+                    <div class="barcode-preview-area" id="barcodePreviewArea">
+                        <svg id="barcodeSvg" style="width:100%; max-width:400px;"></svg>
+                        <canvas id="qrCanvas" style="width:100%; max-width:400px; display:none;"></canvas>
+                        <p id="noPreviewMsg" style="color:#888; margin-top:15px;">Click Generate to see barcode/QR</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="glass-card"><h3>⚙️ Developer API Access</h3><div style="background:#0a0f1a; padding:12px; border-radius:28px; font-family:monospace;" id="apiKeyDisplay">🔑 ****************</div><button onclick="generateApiKey()">🔄 Regenerate API Key</button><button onclick="testApiCall()">🔌 Test API Connection</button><div id="apiTestResult" style="font-size:13px; margin-top:10px;"></div></div></div>
-        
-        <div class="right-panel"><div class="glass-card">
+    </div>
+
+    <!-- Premium Features Row -->
+    <div style="max-width:1400px; margin:20px auto; padding:0 28px;">
+        <div class="glass-card">
             <h3>✨ Premium Features Suite</h3>
             <div class="feature-grid"><div class="feature-btn" onclick="showFeatureDetail('batch')">📦 Batch Generator</div><div class="feature-btn" onclick="showFeatureDetail('unlimited')">♾️ Unlimited Credits</div><div class="feature-btn" onclick="showFeatureDetail('api')">⚙️ API Access</div><div class="feature-btn" onclick="showFeatureDetail('priority')">🎯 Priority Support</div></div>
-            <div id="batchSection"><h4>📦 Batch Processing Engine</h4><textarea id="batchData" rows="3" placeholder="Enter values per line&#10;PRODUCT-001&#10;PRODUCT-002&#10;https://example.com/qr"></textarea><button onclick="runBatchGenerator()">🚀 Generate Batch</button><div id="batchOutput" style="display:none; background:#0f172a; border-radius:24px; padding:12px; margin-top:12px; max-height:180px; overflow:auto;"></div><button id="downloadBatchBtn" onclick="downloadBatchZip()" style="display:none; background:#ff9800;">📥 Download ZIP</button></div>
-            <div style="margin-top:20px;"><h4>🎯 Priority Support Desk</h4><input type="text" id="supportSubject" placeholder="Subject"><textarea id="supportMsg" rows="2" placeholder="Describe your technical issue..."></textarea><button onclick="submitSupportTicket()">📨 Submit Priority Ticket</button><div id="ticketResponse" style="font-size:13px; margin-top:8px;"></div></div>
-        </div></div>
+            <div style="display:flex; flex-wrap:wrap; gap:20px;">
+                <div style="flex:1;"><h4>📦 Batch Processing Engine</h4><textarea id="batchData" rows="3" placeholder="Enter values per line&#10;PRODUCT-001&#10;PRODUCT-002&#10;https://example.com/qr"></textarea><button onclick="runBatchGenerator()">🚀 Generate Batch</button><div id="batchOutput" style="display:none; background:#0f172a; border-radius:24px; padding:12px; margin-top:12px; max-height:180px; overflow:auto;"></div><button id="downloadBatchBtn" onclick="downloadBatchZip()" style="display:none; background:#ff9800;">📥 Download ZIP</button></div>
+                <div style="flex:1;"><h4>🎯 Priority Support Desk</h4><input type="text" id="supportSubject" placeholder="Subject"><textarea id="supportMsg" rows="2" placeholder="Describe your technical issue..."></textarea><button onclick="submitSupportTicket()">📨 Submit Priority Ticket</button><div id="ticketResponse" style="font-size:13px; margin-top:8px;"></div></div>
+                <div style="flex:1;"><h3>⚙️ Developer API Access</h3><div style="background:#0a0f1a; padding:12px; border-radius:28px; font-family:monospace;" id="apiKeyDisplay">🔑 ****************</div><button onclick="generateApiKey()">🔄 Regenerate API Key</button><button onclick="testApiCall()">🔌 Test API Connection</button><div id="apiTestResult" style="font-size:13px; margin-top:10px;"></div></div>
+            </div>
+        </div>
     </div>
 
     <!-- IT SUPPORT & WHY CHOOSE MARK TECH -->
@@ -132,7 +220,7 @@
     <div class="why-section"><div class="glass-card"><h2>🏆 Why Choose MARK TECH?</h2><div class="info-grid"><div class="info-card"><h3>🚀 Enterprise Grade</h3><p>Military-grade encryption, 99.99% uptime, and global CDN for lightning-fast barcode generation.</p></div><div class="info-card"><h3>💡 Developer First</h3><p>RESTful API, SDKs, webhooks, and comprehensive documentation for seamless integration.</p></div><div class="info-card"><h3>🌍 Global Scale</h3><p>Generate millions of barcodes/QR codes monthly. Trusted by 500+ businesses worldwide.</p></div><div class="info-card"><h3>🎯 Priority Support</h3><p>Direct channel to senior engineers, 1-hour response time, and dedicated account manager.</p></div></div></div></div>
 
     <!-- Receipt Section -->
-    <div class="receipt-card"><div style="display:flex; justify-content:space-between;"><h3>🧾 OFFICIAL RECEIPT</h3><div><button id="editReceiptBtn" style="width:auto; background:#ff9800;">✏️ Edit</button><button id="saveReceiptBtn" style="width:auto; background:#2e7d32;">💾 Save</button></div></div><div id="receiptEditableArea" style="background:#0f172a; border-radius:28px; padding:24px; font-family:monospace; margin-top:16px;" contenteditable="false">✅ MARK TECH OFFICIAL RECEIPT<br>Receipt ID: MTX-<span id="receiptId">91051</span><br>Date: <span id="liveDate"></span><br><br>👤 Client: <span id="receiptClientName"></span><br>📧 Contact: <span id="receiptContact"></span><br>🛠️ Service: Premium Suite (Batch + API + Unlimited)<br>💰 Amount: $9.99<br>——————————<br>🔓 Enterprise license granted</div><button onclick="updateReceiptFromProfile()" style="margin-top:12px;">🔄 Update with My Info</button></div>
+    <div class="receipt-card"><div style="display:flex; justify-content:space-between; flex-wrap:wrap;"><h3>🧾 OFFICIAL RECEIPT</h3><div><button id="editReceiptBtn" style="width:auto; background:#ff9800;">✏️ Edit</button><button id="saveReceiptBtn" style="width:auto; background:#2e7d32;">💾 Save</button></div></div><div id="receiptEditableArea" style="background:#0f172a; border-radius:28px; padding:24px; font-family:monospace; margin-top:16px;" contenteditable="false">✅ MARK TECH OFFICIAL RECEIPT<br>Receipt ID: MTX-<span id="receiptId">91051</span><br>Date: <span id="liveDate"></span><br><br>👤 Client: <span id="receiptClientName"></span><br>📧 Contact: <span id="receiptContact"></span><br>🛠️ Service: Premium Suite (Batch + API + Unlimited)<br>💰 Amount: $9.99<br>——————————<br>🔓 Enterprise license granted</div><button onclick="updateReceiptFromProfile()" style="margin-top:12px;">🔄 Update with My Info</button></div>
 
     <!-- History -->
     <section style="max-width:1400px; margin:30px auto; padding:20px 28px; background: rgba(0,0,0,0.5); border-radius:40px;"><h3>📜 Generation History</h3><div id="fullHistoryList" class="history-flex"></div><hr style="margin:20px 0; border-color:#00ff88;"><h3>🗂️ Receipts Archive</h3><div id="receiptsLogList" class="history-flex"></div></section>
@@ -176,26 +264,74 @@
     function socialLogin(provider) { let val = provider==='google'?'user@gmail.com':provider==='facebook'?'fb@facebook.com':'254724356178'; document.getElementById("loginEmailPhone").value=val; document.getElementById("loginPassword").value="secure123"; document.getElementById("fullName").value="Enterprise User"; document.getElementById("gender").value="Male"; document.getElementById("hearAbout").value="Social Media"; handleSignIn(); }
     function logout() { localStorage.removeItem("marktech_logged_in"); localStorage.removeItem("marktech_user"); currentUser=null; document.getElementById("loginPortal").style.display="flex"; document.getElementById("mainApp").style.display="none"; audioElem.pause(); musicPlaying=false; }
     
-    function generateCode() { let text=document.getElementById("inputData").value.trim(); if(!text) return; let type=document.getElementById("barcodeType").value; let svg=document.getElementById("barcodeSvg"); let qrCanvas=document.getElementById("qrCanvas"); if(type==="QR"){ svg.style.display="none"; qrCanvas.style.display="block"; QRCode.toCanvas(qrCanvas,text,{width:280}); } else { svg.style.display="block"; qrCanvas.style.display="none"; JsBarcode("#barcodeSvg",text,{format:type,displayValue:true,height:100,width:2}); } }
-    function downloadOutput() { let type=document.getElementById("barcodeType").value; if(type==="QR"){ let canvas=document.getElementById("qrCanvas"); let a=document.createElement("a"); a.download="qrcode.png"; a.href=canvas.toDataURL(); a.click(); } else { let svg=document.getElementById("barcodeSvg"); let blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:"image/svg+xml"}); let url=URL.createObjectURL(blob); let a=document.createElement("a"); a.download="barcode.svg"; a.href=url; a.click(); URL.revokeObjectURL(url); } }
-    function saveToHistory() { let val=document.getElementById("inputData").value.trim(); if(!val) return; historyArray=[val,...historyArray.filter(v=>v!==val)]; if(historyArray.length>12) historyArray.pop(); localStorage.setItem("barcodeHist",JSON.stringify(historyArray)); renderHistory(); alert("Saved to history"); }
-    function renderHistory() { let div=document.getElementById("fullHistoryList"); if(div) div.innerHTML=historyArray.map(item=>`<div class="history-item" onclick="document.getElementById('inputData').value='${item.replace(/'/g,"\\'")}'; generateCode();">📌 ${item.substring(0,35)}</div>`).join(''); }
-    function generateApiKey() { apiKey="MTK-"+Math.random().toString(36).substr(2,20); localStorage.setItem("app_api_key",apiKey); document.getElementById("apiKeyDisplay").innerHTML=`🔑 ${apiKey}`; document.getElementById("apiTestResult").innerHTML="✅ New API credentials generated"; }
-    function testApiCall() { document.getElementById("apiTestResult").innerHTML=`✅ API Test Successful | Key: ${apiKey} | Status: Active | Plan: Unlimited`; }
-    function runBatchGenerator() { let lines=document.getElementById("batchData").value.split(/\r?\n/).filter(l=>l.trim()); if(lines.length===0){ alert("Enter data lines"); return; } batchFiles=[]; let outDiv=document.getElementById("batchOutput"); outDiv.style.display="block"; outDiv.innerHTML="<strong>⚡ Generating Batch...</strong><br>"; let completed=0; lines.forEach((line,idx)=>{ let isQR=document.getElementById("barcodeType").value==="QR"; if(isQR){ let canvas=document.createElement("canvas"); QRCode.toCanvas(canvas,line.trim(),{width:200},()=>{ batchFiles.push({name:`batch_${idx+1}_qrcode.png`,dataURL:canvas.toDataURL()}); outDiv.innerHTML+=`✅ ${line.substring(0,30)} → QR ready.<br>`; completed++; if(completed===lines.length) document.getElementById("downloadBatchBtn").style.display="block"; }); } else { let svg=document.createElementNS("http://www.w3.org/2000/svg","svg"); JsBarcode(svg,line.trim(),{format:document.getElementById("barcodeType").value,height:80,width:2}); setTimeout(()=>{ let svgData=new XMLSerializer().serializeToString(svg); let blob=new Blob([svgData],{type:"image/svg+xml"}); batchFiles.push({name:`batch_${idx+1}_barcode.svg`,dataURL:URL.createObjectURL(blob)}); outDiv.innerHTML+=`✅ ${line.substring(0,30)} → barcode.<br>`; completed++; if(completed===lines.length) document.getElementById("downloadBatchBtn").style.display="block"; },50); } }); }
-    function downloadBatchZip() { if(batchFiles.length===0) return; let zip=new JSZip(); batchFiles.forEach(f=>{ if(f.dataURL.startsWith('data:image')){ let base64=f.dataURL.split(',')[1]; zip.file(f.name,base64,{base64:true}); } else { fetch(f.dataURL).then(res=>res.blob()).then(blob=>zip.file(f.name,blob)); } }); setTimeout(()=>{ zip.generateAsync({type:"blob"}).then(content=>{ let a=document.createElement("a"); a.href=URL.createObjectURL(content); a.download="batch_codes.zip"; a.click(); }); },400); }
-    function submitSupportTicket() { let sub=document.getElementById("supportSubject").value, msg=document.getElementById("supportMsg").value; if(!sub||!msg){ alert("Fill subject & message"); return; } document.getElementById("ticketResponse").innerHTML=`✅ Priority Ticket #${Math.floor(Math.random()*9000+1000)} opened. Response within 1 hour via WhatsApp/Email.`; document.getElementById("supportSubject").value=""; document.getElementById("supportMsg").value=""; }
-    function showFeatureDetail(f){ let details={batch:{title:"📦 Batch Generator Engine",desc:"Generate thousands of barcodes/QR codes from CSV or multi-line input. Perfect for inventory, labels, and mass production. Output as ZIP archive."},unlimited:{title:"♾️ Unlimited Credits",desc:"No caps, no throttling. Generate unlimited barcodes, QR codes, and API calls. Enterprise-grade throughput."},api:{title:"⚙️ REST API Access",desc:`Your API Key: ${apiKey}\nEndpoint: https://api.marktech.tech/v1/generate\nFull documentation, webhooks, and SDK support.`},priority:{title:"🎯 Priority Support",desc:"24/7 dedicated engineer support. 1-hour response SLA. Direct WhatsApp and email channel."}}; document.getElementById("modalTitle").innerText=details[f].title; document.getElementById("modalDesc").innerHTML=details[f].desc.replace(/\n/g,'<br>'); document.getElementById("featureModal").style.display="flex"; }
-    function closeModal(){ document.getElementById("featureModal").style.display="none"; }
-    function setupReceipt(){ document.getElementById("editReceiptBtn").onclick=()=>{ let area=document.getElementById("receiptEditableArea"); area.contentEditable="true"; area.style.outline="3px solid #ff9800"; alert("Edit mode active"); }; document.getElementById("saveReceiptBtn").onclick=()=>{ let area=document.getElementById("receiptEditableArea"); area.contentEditable="false"; area.style.outline="none"; receiptsArray.unshift({id:"REC-"+Date.now(),content:area.innerHTML,date:new Date().toLocaleString()}); if(receiptsArray.length>10) receiptsArray.pop(); localStorage.setItem("receiptsLog",JSON.stringify(receiptsArray)); renderReceiptsLog(); alert("Receipt saved"); }; }
-    function updateReceiptFromProfile(){ if(currentUser){ document.getElementById("receiptClientName").innerText=currentUser.name; document.getElementById("receiptContact").innerText=currentUser.emailPhone; alert("Receipt updated"); } }
-    function renderReceiptsLog(){ let logDiv=document.getElementById("receiptsLogList"); if(logDiv) logDiv.innerHTML=receiptsArray.map((rec,i)=>`<div class="history-item" onclick="loadReceipt(${i})">🧾 ${rec.id || rec.date.substring(0,16)}</div>`).join(''); }
-    function loadReceipt(idx){ let rec=receiptsArray[idx]; if(rec&&rec.content){ document.getElementById("receiptEditableArea").innerHTML=rec.content; alert("Receipt loaded"); } }
+    function generateCode() { 
+        let text = document.getElementById("inputData").value.trim(); 
+        if(!text) { alert("Enter text to generate"); return; }
+        let type = document.getElementById("barcodeType").value; 
+        let svg = document.getElementById("barcodeSvg"); 
+        let qrCanvas = document.getElementById("qrCanvas");
+        let previewMsg = document.getElementById("noPreviewMsg");
+        if(previewMsg) previewMsg.style.display = "none";
+        
+        if(type === "QR"){ 
+            svg.style.display = "none"; 
+            qrCanvas.style.display = "block"; 
+            QRCode.toCanvas(qrCanvas, text, { width: 300, margin: 2 }, function(err) {
+                if(err) alert("QR generation error");
+            });
+        } else { 
+            svg.style.display = "block"; 
+            qrCanvas.style.display = "none"; 
+            try {
+                JsBarcode("#barcodeSvg", text, { format: type, displayValue: true, height: 120, width: 2 });
+            } catch(e) { alert("Invalid format or data"); }
+        } 
+    }
+    function downloadOutput() { 
+        let type = document.getElementById("barcodeType").value; 
+        if(type === "QR"){ 
+            let canvas = document.getElementById("qrCanvas"); 
+            if(canvas && canvas.toDataURL) {
+                let a = document.createElement("a"); 
+                a.download = "qrcode.png"; 
+                a.href = canvas.toDataURL(); 
+                a.click(); 
+            }
+        } else { 
+            let svg = document.getElementById("barcodeSvg"); 
+            let blob = new Blob([new XMLSerializer().serializeToString(svg)], {type:"image/svg+xml"}); 
+            let url = URL.createObjectURL(blob); 
+            let a = document.createElement("a"); 
+            a.download = "barcode.svg"; 
+            a.href = url; 
+            a.click(); 
+            URL.revokeObjectURL(url); 
+        } 
+    }
+    function shareOutput() {
+        let text = document.getElementById("inputData").value;
+        if(navigator.share) navigator.share({title:"Barcode", text:text});
+        else navigator.clipboard.writeText(text).then(()=>alert("Data copied"));
+    }
+    function printOutput() { window.print(); }
+    function saveToHistory() { let val = document.getElementById("inputData").value.trim(); if(!val) return; historyArray = [val, ...historyArray.filter(v=>v!==val)]; if(historyArray.length>12) historyArray.pop(); localStorage.setItem("barcodeHist",JSON.stringify(historyArray)); renderHistory(); alert("Saved to history"); }
+    function renderHistory() { let div = document.getElementById("fullHistoryList"); if(div) div.innerHTML = historyArray.map(item=>`<div class="history-item" onclick="document.getElementById('inputData').value='${item.replace(/'/g,"\\'")}'; generateCode();">📌 ${item.substring(0,35)}</div>`).join(''); }
+    function generateApiKey() { apiKey = "MTK-"+Math.random().toString(36).substr(2,20); localStorage.setItem("app_api_key",apiKey); document.getElementById("apiKeyDisplay").innerHTML = `🔑 ${apiKey}`; document.getElementById("apiTestResult").innerHTML = "✅ New API credentials generated"; }
+    function testApiCall() { document.getElementById("apiTestResult").innerHTML = `✅ API Test Successful | Key: ${apiKey} | Status: Active | Plan: Unlimited`; }
+    function runBatchGenerator() { let lines = document.getElementById("batchData").value.split(/\r?\n/).filter(l=>l.trim()); if(lines.length===0){ alert("Enter data lines"); return; } batchFiles = []; let outDiv = document.getElementById("batchOutput"); outDiv.style.display = "block"; outDiv.innerHTML = "<strong>⚡ Generating Batch...</strong><br>"; let completed = 0; lines.forEach((line,idx)=>{ let isQR = document.getElementById("barcodeType").value === "QR"; if(isQR){ let canvas = document.createElement("canvas"); QRCode.toCanvas(canvas, line.trim(), { width: 200 }, () => { batchFiles.push({name:`batch_${idx+1}_qrcode.png`, dataURL: canvas.toDataURL()}); outDiv.innerHTML += `✅ ${line.substring(0,30)} → QR ready.<br>`; completed++; if(completed === lines.length) document.getElementById("downloadBatchBtn").style.display = "block"; }); } else { let svg = document.createElementNS("http://www.w3.org/2000/svg","svg"); JsBarcode(svg, line.trim(), { format: document.getElementById("barcodeType").value, height: 80, width: 2 }); setTimeout(()=>{ let svgData = new XMLSerializer().serializeToString(svg); let blob = new Blob([svgData], {type:"image/svg+xml"}); batchFiles.push({name:`batch_${idx+1}_barcode.svg`, dataURL: URL.createObjectURL(blob)}); outDiv.innerHTML += `✅ ${line.substring(0,30)} → barcode.<br>`; completed++; if(completed === lines.length) document.getElementById("downloadBatchBtn").style.display = "block"; }, 50); } }); }
+    function downloadBatchZip() { if(batchFiles.length===0) return; let zip = new JSZip(); batchFiles.forEach(f=>{ if(f.dataURL.startsWith('data:image')){ let base64 = f.dataURL.split(',')[1]; zip.file(f.name, base64, {base64:true}); } else { fetch(f.dataURL).then(res=>res.blob()).then(blob=>zip.file(f.name, blob)); } }); setTimeout(()=>{ zip.generateAsync({type:"blob"}).then(content=>{ let a = document.createElement("a"); a.href = URL.createObjectURL(content); a.download = "batch_codes.zip"; a.click(); }); }, 400); }
+    function submitSupportTicket() { let sub = document.getElementById("supportSubject").value, msg = document.getElementById("supportMsg").value; if(!sub||!msg){ alert("Fill subject & message"); return; } document.getElementById("ticketResponse").innerHTML = `✅ Priority Ticket #${Math.floor(Math.random()*9000+1000)} opened. Response within 1 hour via WhatsApp/Email.`; document.getElementById("supportSubject").value = ""; document.getElementById("supportMsg").value = ""; }
+    function showFeatureDetail(f){ let details={batch:{title:"📦 Batch Generator Engine",desc:"Generate thousands of barcodes/QR codes from CSV or multi-line input. Perfect for inventory, labels, and mass production. Output as ZIP archive."},unlimited:{title:"♾️ Unlimited Credits",desc:"No caps, no throttling. Generate unlimited barcodes, QR codes, and API calls. Enterprise-grade throughput."},api:{title:"⚙️ REST API Access",desc:`Your API Key: ${apiKey}\nEndpoint: https://api.marktech.tech/v1/generate\nFull documentation, webhooks, and SDK support.`},priority:{title:"🎯 Priority Support",desc:"24/7 dedicated engineer support. 1-hour response SLA. Direct WhatsApp and email channel."}}; document.getElementById("modalTitle").innerText = details[f].title; document.getElementById("modalDesc").innerHTML = details[f].desc.replace(/\n/g,'<br>'); document.getElementById("featureModal").style.display = "flex"; }
+    function closeModal(){ document.getElementById("featureModal").style.display = "none"; }
+    function setupReceipt(){ document.getElementById("editReceiptBtn").onclick = ()=>{ let area = document.getElementById("receiptEditableArea"); area.contentEditable = "true"; area.style.outline = "3px solid #ff9800"; alert("Edit mode active"); }; document.getElementById("saveReceiptBtn").onclick = ()=>{ let area = document.getElementById("receiptEditableArea"); area.contentEditable = "false"; area.style.outline = "none"; receiptsArray.unshift({id:"REC-"+Date.now(), content: area.innerHTML, date: new Date().toLocaleString()}); if(receiptsArray.length>10) receiptsArray.pop(); localStorage.setItem("receiptsLog", JSON.stringify(receiptsArray)); renderReceiptsLog(); alert("Receipt saved"); }; }
+    function updateReceiptFromProfile(){ if(currentUser){ document.getElementById("receiptClientName").innerText = currentUser.name; document.getElementById("receiptContact").innerText = currentUser.emailPhone; alert("Receipt updated"); } }
+    function renderReceiptsLog(){ let logDiv = document.getElementById("receiptsLogList"); if(logDiv) logDiv.innerHTML = receiptsArray.map((rec,i)=>`<div class="history-item" onclick="loadReceipt(${i})">🧾 ${rec.id || rec.date.substring(0,16)}</div>`).join(''); }
+    function loadReceipt(idx){ let rec = receiptsArray[idx]; if(rec && rec.content){ document.getElementById("receiptEditableArea").innerHTML = rec.content; alert("Receipt loaded"); } }
     function copyText(t){ navigator.clipboard.writeText(t); alert("Copied!"); }
     function toggleMusic(){ if(musicPlaying){ audioElem.pause(); musicPlaying=false; } else { audioElem.play().catch(e=>console.log); musicPlaying=true; } }
     function toggleTheme(){ document.body.classList.toggle("light"); }
-    function initMovingLines(){ let c=document.getElementById("movingLines"); for(let i=0;i<40;i++){ let l=document.createElement("div"); l.className="line"; l.style.left=Math.random()*100+"%"; l.style.animationDuration=5+Math.random()*8+"s"; l.style.animationDelay=Math.random()*7+"s"; c.appendChild(l); } }
-    window.addEventListener("DOMContentLoaded",()=>{ initMovingLines(); let logged=localStorage.getItem("marktech_logged_in"); let savedUser=localStorage.getItem("marktech_user"); if(logged==="true"&&savedUser){ currentUser=JSON.parse(savedUser); document.getElementById("loginPortal").style.display="none"; document.getElementById("mainApp").style.display="block"; document.getElementById("userNameDisplay").innerHTML=`👤 ${currentUser.name.split(' ')[0]}`; document.getElementById("receiptClientName").innerText=currentUser.name; document.getElementById("receiptContact").innerText=currentUser.emailPhone; document.getElementById("liveDate").innerText=new Date().toLocaleString(); document.getElementById("apiKeyDisplay").innerHTML=`🔑 ${apiKey}`; generateCode(); renderHistory(); renderReceiptsLog(); } else { document.getElementById("loginPortal").style.display="flex"; document.getElementById("mainApp").style.display="none"; } setupReceipt(); });
+    function initMovingLines(){ let c = document.getElementById("movingLines"); for(let i=0;i<40;i++){ let l = document.createElement("div"); l.className = "line"; l.style.left = Math.random()*100+"%"; l.style.animationDuration = 5+Math.random()*8+"s"; l.style.animationDelay = Math.random()*7+"s"; c.appendChild(l); } }
+    window.addEventListener("DOMContentLoaded", ()=>{ initMovingLines(); let logged = localStorage.getItem("marktech_logged_in"); let savedUser = localStorage.getItem("marktech_user"); if(logged === "true" && savedUser){ currentUser = JSON.parse(savedUser); document.getElementById("loginPortal").style.display = "none"; document.getElementById("mainApp").style.display = "block"; document.getElementById("userNameDisplay").innerHTML = `👤 ${currentUser.name.split(' ')[0]}`; document.getElementById("receiptClientName").innerText = currentUser.name; document.getElementById("receiptContact").innerText = currentUser.emailPhone; document.getElementById("liveDate").innerText = new Date().toLocaleString(); document.getElementById("apiKeyDisplay").innerHTML = `🔑 ${apiKey}`; generateCode(); renderHistory(); renderReceiptsLog(); } else { document.getElementById("loginPortal").style.display = "flex"; document.getElementById("mainApp").style.display = "none"; } setupReceipt(); });
 </script>
 </body>
 </html>
