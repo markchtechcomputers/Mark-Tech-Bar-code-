@@ -1,14 +1,12 @@
-# Use Nginx
-FROM nginx:alpine
+FROM node:18
 
-# Remove default Nginx files
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Copy your website files into container
-COPY . /usr/share/nginx/html
+COPY package*.json ./
+RUN npm install
 
-# Expose port
-EXPOSE 80
+COPY . .
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD ["npm", "start"]
