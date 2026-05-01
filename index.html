@@ -3,520 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MARK TECH | Sign In Portal</title>
+    <title>MARK TECH | Enterprise Barcode & API Suite</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0a0c18 0%, #0f172a 100%);
+            font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+            background: radial-gradient(circle at 20% 30%, #0a0c1a, #02030a);
+            color: #ffffff;
             min-height: 100vh;
-            transition: all 0.3s;
+            transition: background 0.3s;
         }
         body.light {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4fa 100%);
+            background: radial-gradient(circle at 20% 30%, #e8edf5, #d0d9e8);
+            color: #111;
         }
+        /* Moving Tech Lines */
+        .moving-lines { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index:0; overflow: hidden; }
+        .moving-lines .line { position: absolute; width: 2px; height: 100%; background: linear-gradient(to bottom, rgba(0,255,100,0), rgba(0,255,100,0.5), rgba(0,255,100,0)); animation: slideLine 9s linear infinite; }
+        @keyframes slideLine { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 0.7; } 100% { transform: translateY(100%); opacity: 0; } }
+        
         /* Login Portal Styles */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            z-index: 2;
-        }
-        .login-card {
-            background: rgba(10, 15, 30, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 48px;
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            border: 1px solid #00e676;
-            box-shadow: 0 25px 50px rgba(0,255,0,0.2);
-        }
-        body.light .login-card {
-            background: rgba(255,255,255,0.95);
-            border-color: #1e88e5;
-        }
-        .login-header { text-align: center; margin-bottom: 30px; }
-        .login-header h1 { font-size: 2.5rem; color: #00e676; text-shadow: 0 0 10px #0f0; }
-        .input-group { margin-bottom: 18px; }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 60px;
-            border: 1px solid #2a3a4a;
-            background: #1e1f2c;
-            color: white;
-            font-size: 1rem;
-        }
-        body.light .input-group input, body.light .input-group select {
-            background: white;
-            color: black;
-            border: 1px solid #ccc;
-        }
-        .social-buttons { display: flex; gap: 15px; margin: 20px 0; }
-        .social-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; background: #2d3748; border: none; padding: 12px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; z-index: 2; }
+        .login-card { background: rgba(8, 12, 25, 0.95); backdrop-filter: blur(12px); border-radius: 52px; padding: 48px; max-width: 520px; width: 100%; border: 1px solid rgba(0, 255, 100, 0.5); box-shadow: 0 30px 60px rgba(0,255,100,0.2); }
+        body.light .login-card { background: rgba(255,255,255,0.96); border-color: #1e88e5; }
+        .login-header { text-align: center; margin-bottom: 35px; }
+        .login-header h1 { font-size: 2.8rem; font-weight: 800; background: linear-gradient(135deg, #00ff88, #00ccff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .input-group { margin-bottom: 20px; }
+        .input-group input, .input-group select { width: 100%; padding: 14px 20px; border-radius: 60px; border: 1px solid #2a3a4a; background: #141b2b; color: white; font-size: 1rem; font-weight: 500; }
+        body.light .input-group input, body.light .input-group select { background: white; color: #111; border: 1px solid #bbb; }
+        .social-buttons { display: flex; gap: 15px; margin: 25px 0; }
+        .social-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 60px; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; }
         .google-btn { background: #db4437; color: white; }
         .facebook-btn { background: #4267B2; color: white; }
         .phone-btn { background: #25D366; color: white; }
-        .login-btn { background: #00e676; color: black; padding: 14px; border-radius: 60px; font-weight: bold; font-size: 1.1rem; width: 100%; margin-top: 15px; cursor: pointer; border: none; }
-        .error-msg { color: #ff6b6b; font-size: 12px; margin-top: 5px; display: none; }
-        .moving-lines { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index:0; overflow:hidden; }
-        .moving-lines .line { position: absolute; width: 2px; height: 100%; background: linear-gradient(to bottom, rgba(0,255,0,0), rgba(0,255,0,0.3), rgba(0,255,0,0)); animation: slideLine 8s linear infinite; }
-        @keyframes slideLine { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(100%); opacity: 0; } }
+        .login-btn { background: linear-gradient(135deg, #00ff88, #00ccff); color: #000; font-weight: 800; padding: 14px; border-radius: 60px; font-size: 1.1rem; width: 100%; cursor: pointer; border: none; }
         
-        /* Main App (hidden until login) */
-        .main-app { display: none; }
-        .topbar { display: flex; justify-content: space-between; padding: 14px 28px; background: rgba(0,0,0,0.5); position: sticky; top:0; z-index: 10; }
-        .tech-btn, .music-icon, .theme-btn { background: #00e676; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: bold; }
-        .music-icon, .theme-btn { width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
-        .title { text-align: center; font-size: 2.5rem; margin: 20px 0; text-shadow: 0 0 15px #0f0; }
-        .split-generator { display: flex; flex-wrap: wrap; gap: 28px; max-width: 1400px; margin: 20px auto; padding: 0 24px; }
-        .left-panel, .right-panel { flex: 1; min-width: 300px; }
-        .glass-card { background: rgba(10,15,30,0.85); border-radius: 32px; padding: 24px; border: 1px solid #00e676; margin-bottom: 20px; }
-        .feature-grid { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
-        .feature-btn { background: #1f2a48; padding: 14px; border-radius: 60px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
-        .feature-btn.unlocked { background: #00e676; color: black; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 40px; border: none; background: #1e1f2c; color: white; }
-        button { background: #00e676; color: black; font-weight: bold; padding: 10px; border: none; border-radius: 40px; cursor: pointer; width: 100%; margin-top: 8px; }
-        .barcode-area { background: white; border-radius: 24px; padding: 20px; text-align: center; margin-top: 15px; }
-        .batch-results { max-height: 200px; overflow-y: auto; background: #0f172a; border-radius: 16px; padding: 12px; margin-top: 12px; font-size: 12px; }
-        .receipt-card { background: rgba(0,0,0,0.8); border-radius: 32px; border: 1px solid gold; padding: 24px; margin: 20px auto; max-width: 1000px; }
-        .history-flex { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-        .history-item { background: #1e2a3e; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
-        .modal-overlay { position: fixed; top:0;left:0;width:100%;height:100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #0f172a; padding: 28px; border-radius: 32px; max-width: 500px; width:90%; border:2px solid lime; position: relative; }
-        .float-wa { position: fixed; right: 24px; bottom: 30px; background: #25D366; border-radius: 60px; padding: 12px 20px; cursor: pointer; z-index: 99; }
-        @media (max-width:800px){ .split-generator{flex-direction:column;} }
+        /* Main App */
+        .main-app { display: none; position: relative; z-index: 2; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 32px; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); position: sticky; top:0; z-index: 100; border-bottom: 1px solid rgba(0,255,100,0.3); }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .spinning-logo { width: 50px; height: 50px; background: linear-gradient(135deg, #00ff88, #00ccff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; animation: spinLogo 4s linear infinite; box-shadow: 0 0 20px #00ff88; }
+        @keyframes spinLogo { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .brand-text { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; background: linear-gradient(135deg, #ffffff, #00ffaa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .top-controls { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { background: rgba(0,255,100,0.2); border: 1px solid #00ff88; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; transition: 0.2s; }
+        .icon-btn:hover { background: #00ff88; transform: scale(1.05); }
+        .user-badge { background: #00ff8822; padding: 8px 20px; border-radius: 40px; font-weight: 600; border: 1px solid #00ff88; }
+        .title-section { text-align: center; padding: 30px 20px; }
+        .title-section h1 { font-size: 3.5rem; font-weight: 800; text-shadow: 0 0 20px #00ff88, 0 0 40px #00ccff; letter-spacing: 2px; }
+        .title-section p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
+        
+        /* Cards */
+        .split-generator { display: flex; flex-wrap: wrap; gap: 30px; max-width: 1400px; margin: 30px auto; padding: 0 28px; }
+        .glass-card { background: rgba(10, 20, 35, 0.85); backdrop-filter: blur(10px); border-radius: 36px; padding: 28px; border: 1px solid rgba(0,255,100,0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.3); transition: 0.3s; }
+        body.light .glass-card { background: rgba(255,255,255,0.9); border-color: #1e88e5; }
+        .feature-grid { display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+        .feature-btn { background: linear-gradient(135deg, #1f2a48, #162030); padding: 14px 20px; border-radius: 60px; font-weight: 700; text-align: center; flex: 1; cursor: pointer; border: 1px solid #00ff8855; transition: 0.2s; }
+        .feature-btn:hover { transform: translateY(-3px); background: #00ff88; color: #000; }
+        input, select, textarea { width: 100%; padding: 14px 18px; margin: 10px 0; border-radius: 60px; border: none; background: #141e2c; color: white; font-weight: 500; }
+        body.light input, body.light select, body.light textarea { background: #f0f2f5; color: #111; border: 1px solid #ccc; }
+        button { background: linear-gradient(135deg, #00ff88, #00ccff); color: #000; font-weight: 800; padding: 12px; border-radius: 60px; cursor: pointer; width: 100%; margin-top: 10px; border: none; transition: 0.2s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,255,136,0.4); }
+        .barcode-area { background: #ffffff; border-radius: 28px; padding: 24px; text-align: center; margin-top: 20px; }
+        .why-section, .it-support-section { max-width: 1400px; margin: 40px auto; padding: 0 28px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 25px; margin-top: 25px; }
+        .info-card { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border-radius: 28px; padding: 28px; border-left: 5px solid #00ff88; transition: 0.3s; }
+        body.light .info-card { background: rgba(255,255,255,0.85); }
+        .receipt-card { background: rgba(0,0,0,0.8); border-radius: 36px; border: 1px solid gold; padding: 28px; margin: 30px auto; max-width: 1100px; }
+        .history-flex { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+        .history-item { background: rgba(0,255,100,0.15); padding: 8px 24px; border-radius: 40px; cursor: pointer; font-weight: 500; border: 1px solid #00ff88; }
+        .modal-overlay { position: fixed; top:0;left:0;width:100%;height:100%; background: rgba(0,0,0,0.97); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #0f172a; padding: 32px; border-radius: 40px; max-width: 500px; width: 90%; border: 2px solid #00ff88; position: relative; }
+        .float-wa { position: fixed; right: 28px; bottom: 30px; background: #25D366; border-radius: 60px; padding: 14px 24px; font-weight: bold; cursor: pointer; z-index: 99; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        @media (max-width:800px){ .title-section h1 { font-size: 2rem; } .brand-text { font-size: 1.2rem; } }
     </style>
 </head>
 <body>
 <div class="moving-lines" id="movingLines"></div>
 
-<!-- LOGIN PORTAL PAGE -->
+<!-- LOGIN PORTAL -->
 <div id="loginPortal" class="login-container">
     <div class="login-card">
-        <div class="login-header">
-            <h1>🔮 MARK TECH</h1>
-            <p style="margin-top: 10px;">Sign in to access premium barcode studio</p>
-        </div>
-        
-        <div class="input-group">
-            <input type="text" id="loginEmailPhone" placeholder="Email or Phone Number" value="">
-        </div>
-        <div class="input-group">
-            <input type="password" id="loginPassword" placeholder="Password" value="">
-        </div>
-        <div class="input-group">
-            <input type="text" id="fullName" placeholder="Full Name" value="">
-        </div>
-        <div class="input-group">
-            <select id="gender">
-                <option value="">Select Gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Prefer not to say</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <select id="hearAbout">
-                <option value="">How did you hear about MARK TECH?</option>
-                <option>Social Media</option>
-                <option>Friend/Family</option>
-                <option>Google Search</option>
-                <option>WhatsApp Group</option>
-                <option>Other</option>
-            </select>
-        </div>
-        
-        <div class="social-buttons">
-            <button class="social-btn google-btn" onclick="socialLogin('google')">📧 Gmail</button>
-            <button class="social-btn facebook-btn" onclick="socialLogin('facebook')">📘 Facebook</button>
-            <button class="social-btn phone-btn" onclick="socialLogin('phone')">📱 Phone/WhatsApp</button>
-        </div>
-        
-        <button class="login-btn" onclick="handleSignIn()">🔓 SIGN IN & ACCESS DASHBOARD</button>
-        <div id="loginError" class="error-msg"></div>
-        <p style="text-align: center; margin-top: 20px; font-size: 12px;">Demo: Use any email/phone + any password to test</p>
+        <div class="login-header"><h1>⚡ MARK TECH</h1><p style="margin-top:10px;">Enterprise Barcode & API Platform</p></div>
+        <div class="input-group"><input type="text" id="loginEmailPhone" placeholder="Email or Phone Number"></div>
+        <div class="input-group"><input type="password" id="loginPassword" placeholder="Password"></div>
+        <div class="input-group"><input type="text" id="fullName" placeholder="Full Name"></div>
+        <div class="input-group"><select id="gender"><option value="">Select Gender</option><option>Male</option><option>Female</option><option>Prefer not to say</option></select></div>
+        <div class="input-group"><select id="hearAbout"><option value="">How did you hear about MARK TECH?</option><option>Social Media</option><option>Business Partner</option><option>Tech Conference</option><option>WhatsApp Community</option><option>Other</option></select></div>
+        <div class="social-buttons"><button class="social-btn google-btn" onclick="socialLogin('google')">📧 Gmail</button><button class="social-btn facebook-btn" onclick="socialLogin('facebook')">📘 Facebook</button><button class="social-btn phone-btn" onclick="socialLogin('phone')">📱 Phone</button></div>
+        <button class="login-btn" onclick="handleSignIn()">🔓 ACCESS DASHBOARD</button>
+        <div id="loginError" style="color:#ff6b6b; font-size:13px; margin-top:15px; text-align:center;"></div>
     </div>
 </div>
 
-<!-- MAIN APPLICATION (hidden until login) -->
+<!-- MAIN APPLICATION -->
 <div id="mainApp" class="main-app">
     <div class="topbar">
-        <div class="tech-btn" onclick="window.open('https://manlung-tech-city.vercel.app/')">⚡ TECH PORTAL</div>
-        <div><span id="userNameDisplay" style="margin-right:15px;">👤 User</span></div>
-        <div class="top-controls" style="display:flex; gap:10px;">
-            <div class="music-icon" onclick="toggleMusic()">🎵</div>
-            <div class="theme-btn" onclick="toggleTheme()">🌓</div>
-            <div class="tech-btn" onclick="logout()">🚪 Logout</div>
-        </div>
+        <div class="logo-area"><div class="spinning-logo">M</div><span class="brand-text">MARK TECH</span></div>
+        <div class="top-controls"><div class="user-badge" id="userNameDisplay">👤 USER</div><div class="icon-btn" onclick="toggleMusic()">🎵</div><div class="icon-btn" onclick="toggleTheme()">🌓</div><div class="icon-btn" onclick="logout()">🚪</div></div>
     </div>
-    <div class="title">🔮 MARK TECH · Barcode API Studio</div>
+    <div class="title-section"><h1>MARK TECH · BARCODE API STUDIO</h1><p>Next-Generation Barcode Generation & API Suite</p></div>
 
     <div class="split-generator">
-        <div class="left-panel">
-            <div class="glass-card">
-                <h2>📡 Barcode & QR Generator</h2>
-                <input type="text" id="inputData" placeholder="Text, URL, or number" value="MARK-TECH-2026">
-                <select id="barcodeType"><option value="CODE128">CODE128</option><option value="QR">QR CODE</option><option value="EAN13">EAN13</option></select>
-                <div style="display:flex; gap:12px;"><button onclick="generateCode()" style="background:cyan;">✨ Generate</button><button onclick="downloadOutput()">💾 Download</button></div>
-                <div class="barcode-area"><svg id="barcodeSvg" style="width:100%;"></svg><canvas id="qrCanvas" style="width:100%; display:none;"></canvas></div>
-                <button onclick="saveToHistory()">📁 Save to History</button>
-            </div>
-            
-            <div class="glass-card">
-                <h3>⚙️ API Access</h3>
-                <div class="api-key-display" style="background:#0a0f1a; padding:10px; border-radius:20px;" id="apiKeyDisplay">🔑 ****************</div>
-                <button onclick="generateApiKey()">🔄 Regenerate API Key</button>
-                <button onclick="testApiCall()">🔌 Test API Connection</button>
-                <div id="apiTestResult" style="font-size:12px; margin-top:8px;"></div>
-            </div>
+        <div class="left-panel"><div class="glass-card">
+            <h2>📡 Generate Barcode / QR</h2>
+            <input type="text" id="inputData" placeholder="Text, URL, or Product ID" value="MARK-TECH-PRO">
+            <select id="barcodeType"><option value="CODE128">CODE128 (High Density)</option><option value="QR">QR CODE (Smart Link)</option><option value="EAN13">EAN13 (Retail)</option></select>
+            <div style="display:flex; gap:12px;"><button onclick="generateCode()">✨ Generate</button><button onclick="downloadOutput()">💾 Download</button></div>
+            <div class="barcode-area"><svg id="barcodeSvg" style="width:100%;"></svg><canvas id="qrCanvas" style="width:100%; display:none;"></canvas></div>
+            <button onclick="saveToHistory()">📁 Save to History</button>
         </div>
-
-        <div class="right-panel">
-            <div class="glass-card">
-                <h3>✨ Premium Features (Auto-Unlocked After Login)</h3>
-                <div class="feature-grid">
-                    <div class="feature-btn unlocked" onclick="showFeatureDetail('batch')">📦 Batch Generator</div>
-                    <div class="feature-btn unlocked" onclick="showFeatureDetail('unlimited')">♾️ Unlimited Credits</div>
-                    <div class="feature-btn unlocked" onclick="showFeatureDetail('api')">⚙️ API Access</div>
-                    <div class="feature-btn unlocked" onclick="showFeatureDetail('priority')">🎯 Priority Support</div>
-                </div>
-                
-                <!-- Batch Generator Section -->
-                <div id="batchSection">
-                    <h4>📦 Batch Generator</h4>
-                    <textarea id="batchData" rows="3" placeholder="Enter one value per line&#10;PRODUCT-001&#10;PRODUCT-002&#10;https://example.com/qr"></textarea>
-                    <button onclick="runBatchGenerator()">🚀 Generate Batch</button>
-                    <div id="batchOutput" class="batch-results" style="display:none;"></div>
-                    <button id="downloadBatchBtn" onclick="downloadBatchZip()" style="display:none; background:#ff9800;">📥 Download All (ZIP)</button>
-                </div>
-                
-                <!-- Priority Support -->
-                <div id="supportSection" style="margin-top:20px;">
-                    <h4>🎯 Priority Support</h4>
-                    <input type="text" id="supportSubject" placeholder="Subject">
-                    <textarea id="supportMsg" rows="2" placeholder="Describe your issue..."></textarea>
-                    <button onclick="submitSupportTicket()">📨 Submit Priority Ticket</button>
-                    <div id="ticketResponse" style="font-size:12px; margin-top:8px;"></div>
-                </div>
-            </div>
-        </div>
+        <div class="glass-card"><h3>⚙️ Developer API Access</h3><div style="background:#0a0f1a; padding:12px; border-radius:28px; font-family:monospace;" id="apiKeyDisplay">🔑 ****************</div><button onclick="generateApiKey()">🔄 Regenerate API Key</button><button onclick="testApiCall()">🔌 Test API Connection</button><div id="apiTestResult" style="font-size:13px; margin-top:10px;"></div></div></div>
+        
+        <div class="right-panel"><div class="glass-card">
+            <h3>✨ Premium Features Suite</h3>
+            <div class="feature-grid"><div class="feature-btn" onclick="showFeatureDetail('batch')">📦 Batch Generator</div><div class="feature-btn" onclick="showFeatureDetail('unlimited')">♾️ Unlimited Credits</div><div class="feature-btn" onclick="showFeatureDetail('api')">⚙️ API Access</div><div class="feature-btn" onclick="showFeatureDetail('priority')">🎯 Priority Support</div></div>
+            <div id="batchSection"><h4>📦 Batch Processing Engine</h4><textarea id="batchData" rows="3" placeholder="Enter values per line&#10;PRODUCT-001&#10;PRODUCT-002&#10;https://example.com/qr"></textarea><button onclick="runBatchGenerator()">🚀 Generate Batch</button><div id="batchOutput" style="display:none; background:#0f172a; border-radius:24px; padding:12px; margin-top:12px; max-height:180px; overflow:auto;"></div><button id="downloadBatchBtn" onclick="downloadBatchZip()" style="display:none; background:#ff9800;">📥 Download ZIP</button></div>
+            <div style="margin-top:20px;"><h4>🎯 Priority Support Desk</h4><input type="text" id="supportSubject" placeholder="Subject"><textarea id="supportMsg" rows="2" placeholder="Describe your technical issue..."></textarea><button onclick="submitSupportTicket()">📨 Submit Priority Ticket</button><div id="ticketResponse" style="font-size:13px; margin-top:8px;"></div></div>
+        </div></div>
     </div>
+
+    <!-- IT SUPPORT & WHY CHOOSE MARK TECH -->
+    <div class="it-support-section"><div class="glass-card"><h2>🖥️ IT Support & Infrastructure</h2><div class="info-grid"><div class="info-card"><h3>⚡ 24/7 Enterprise Support</h3><p>Dedicated IT team, real-time monitoring, and SLA-backed response for all premium users.</p></div><div class="info-card"><h3>🔒 Secure API Gateway</h3><p>End-to-end encryption, rate limiting, and automatic failover for business-critical integrations.</p></div><div class="info-card"><h3>📊 Analytics Dashboard</h3><p>Track generation metrics, API usage, and export logs for compliance.</p></div></div></div></div>
+    
+    <div class="why-section"><div class="glass-card"><h2>🏆 Why Choose MARK TECH?</h2><div class="info-grid"><div class="info-card"><h3>🚀 Enterprise Grade</h3><p>Military-grade encryption, 99.99% uptime, and global CDN for lightning-fast barcode generation.</p></div><div class="info-card"><h3>💡 Developer First</h3><p>RESTful API, SDKs, webhooks, and comprehensive documentation for seamless integration.</p></div><div class="info-card"><h3>🌍 Global Scale</h3><p>Generate millions of barcodes/QR codes monthly. Trusted by 500+ businesses worldwide.</p></div><div class="info-card"><h3>🎯 Priority Support</h3><p>Direct channel to senior engineers, 1-hour response time, and dedicated account manager.</p></div></div></div></div>
 
     <!-- Receipt Section -->
-    <div class="receipt-card" id="receiptCard">
-        <div style="display:flex; justify-content:space-between; flex-wrap:wrap;"><h3>🧾 MARK TECH OFFICIAL RECEIPT</h3><div><button id="editReceiptBtn" style="width:auto; background:#ff9800;">✏️ Edit</button><button id="saveReceiptBtn" style="width:auto; background:#2e7d32;">💾 Save</button></div></div>
-        <div id="receiptEditableArea" class="receipt-content-editable" style="background:#0f172a; border-radius:24px; padding:20px; font-family:monospace; margin-top:15px;" contenteditable="false">✅ MARK TECH OFFICIAL RECEIPT<br>Receipt ID: MTX-91051<br>Date: <span id="liveDate"></span><br><br>👤 Client: <span id="receiptClientName"></span><br>📧 Email/Phone: <span id="receiptContact"></span><br>🛠️ Service: Premium Suite (Batch + API + Unlimited)<br>💰 Amount: $9.99<br>——————————<br>🔓 Thank you for trusting MARK TECH</div>
-        <button onclick="updateReceiptFromProfile()" style="margin-top:10px;">🔄 Update Receipt with My Info</button>
-    </div>
+    <div class="receipt-card"><div style="display:flex; justify-content:space-between;"><h3>🧾 OFFICIAL RECEIPT</h3><div><button id="editReceiptBtn" style="width:auto; background:#ff9800;">✏️ Edit</button><button id="saveReceiptBtn" style="width:auto; background:#2e7d32;">💾 Save</button></div></div><div id="receiptEditableArea" style="background:#0f172a; border-radius:28px; padding:24px; font-family:monospace; margin-top:16px;" contenteditable="false">✅ MARK TECH OFFICIAL RECEIPT<br>Receipt ID: MTX-<span id="receiptId">91051</span><br>Date: <span id="liveDate"></span><br><br>👤 Client: <span id="receiptClientName"></span><br>📧 Contact: <span id="receiptContact"></span><br>🛠️ Service: Premium Suite (Batch + API + Unlimited)<br>💰 Amount: $9.99<br>——————————<br>🔓 Enterprise license granted</div><button onclick="updateReceiptFromProfile()" style="margin-top:12px;">🔄 Update with My Info</button></div>
 
     <!-- History -->
-    <section style="max-width:1400px; margin:20px auto; padding:20px 24px; background: rgba(0,0,0,0.7); border-radius:32px;">
-        <h3>📜 Barcode History</h3>
-        <div id="fullHistoryList" class="history-flex"></div>
-        <hr style="margin:20px 0; border-color:lime;">
-        <h3>🗂️ Saved Receipts Log</h3>
-        <div id="receiptsLogList" class="history-flex"></div>
-    </section>
+    <section style="max-width:1400px; margin:30px auto; padding:20px 28px; background: rgba(0,0,0,0.5); border-radius:40px;"><h3>📜 Generation History</h3><div id="fullHistoryList" class="history-flex"></div><hr style="margin:20px 0; border-color:#00ff88;"><h3>🗂️ Receipts Archive</h3><div id="receiptsLogList" class="history-flex"></div></section>
 
     <!-- Contact & Donation -->
-    <section style="max-width:1400px; margin:30px auto; padding:0 24px;">
-        <div class="glass-card">
-            <h2>📞 Support & Donation</h2>
-            <div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">
-                <div style="flex:1; text-align:center;"><h3>📱 WhatsApp</h3><p>+254724356178</p><button onclick="window.open('https://wa.me/254724356178')">Chat</button></div>
-                <div style="flex:1; text-align:center;"><h3>📧 Email</h3><p>marklinochieng@gmail.com</p><button onclick="window.location.href='mailto:marklinochieng@gmail.com'">Send</button></div>
-                <div style="flex:1; text-align:center;"><h3>❤️ Donate</h3><p>M-Pesa: 522522 / Acc:1336980125</p><button onclick="copyText('M-Pesa 522522 Acc:1336980125')">Copy</button></div>
-            </div>
-        </div>
-    </section>
-    <div class="float-wa" onclick="window.open('https://wa.me/254724356178')">💬 WhatsApp</div>
+    <section style="max-width:1400px; margin:30px auto; padding:0 28px 50px;"><div class="glass-card"><h2>📞 Connect With Us</h2><div style="display:flex; flex-wrap:wrap; gap:25px; margin-top:20px;"><div style="flex:1; text-align:center;"><h3>📱 WhatsApp</h3><p>+254724356178</p><button onclick="window.open('https://wa.me/254724356178')">Chat Now</button></div><div style="flex:1; text-align:center;"><h3>📧 Email</h3><p>marklinochieng@gmail.com</p><button onclick="window.location.href='mailto:marklinochieng@gmail.com'">Send Email</button></div><div style="flex:1; text-align:center;"><h3>❤️ Support Donation</h3><p>M-Pesa: 522522 / Acc:1336980125</p><button onclick="copyText('M-Pesa: 522522 Account:1336980125')">Copy Details</button></div></div></div></section>
+    <div class="float-wa" onclick="window.open('https://wa.me/254724356178')">💬 WhatsApp Support</div>
 </div>
 
-<!-- Modal -->
-<div id="featureModal" class="modal-overlay"><div class="modal-content"><button class="close-btn" style="background:red; width:auto; position:absolute; right:15px; top:10px;" onclick="closeModal()">✕</button><h2 id="modalTitle"></h2><p id="modalDesc" style="margin-top:20px;"></p><button onclick="closeModal()" style="margin-top:20px;">Got it</button></div></div>
+<div id="featureModal" class="modal-overlay"><div class="modal-content"><button style="background:red; width:auto; position:absolute; right:20px; top:15px;" onclick="closeModal()">✕</button><h2 id="modalTitle"></h2><p id="modalDesc" style="margin-top:25px;"></p><button onclick="closeModal()">Close</button></div></div>
 <audio id="bgAudio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
 <script>
-    // ========== LOGIN SYSTEM ==========
     let currentUser = null;
-    
+    let apiKey = localStorage.getItem("app_api_key") || "MTK-" + Math.random().toString(36).substr(2, 18);
+    let historyArray = JSON.parse(localStorage.getItem("barcodeHist") || "[]");
+    let receiptsArray = JSON.parse(localStorage.getItem("receiptsLog") || "[]");
+    let batchFiles = [];
+    let audioElem = document.getElementById("bgAudio");
+    let musicPlaying = false;
+
     function handleSignIn() {
-        const emailPhone = document.getElementById("loginEmailPhone").value.trim();
-        const password = document.getElementById("loginPassword").value.trim();
-        const fullName = document.getElementById("fullName").value.trim();
-        const gender = document.getElementById("gender").value;
-        const hearAbout = document.getElementById("hearAbout").value;
-        
-        if (!emailPhone) {
-            showLoginError("Please enter email or phone number");
-            return;
-        }
-        if (!password) {
-            showLoginError("Please enter password");
-            return;
-        }
-        if (!fullName) {
-            showLoginError("Please enter your full name");
-            return;
-        }
-        
-        // Store user data
-        currentUser = {
-            emailPhone: emailPhone,
-            name: fullName,
-            gender: gender,
-            hearAbout: hearAbout,
-            loginTime: new Date().toISOString()
-        };
+        let emailPhone = document.getElementById("loginEmailPhone").value.trim();
+        let password = document.getElementById("loginPassword").value.trim();
+        let fullName = document.getElementById("fullName").value.trim();
+        let gender = document.getElementById("gender").value;
+        let hearAbout = document.getElementById("hearAbout").value;
+        if(!emailPhone || !password || !fullName) { document.getElementById("loginError").innerText = "All fields required"; return; }
+        currentUser = { emailPhone, name: fullName, gender, hearAbout };
         localStorage.setItem("marktech_user", JSON.stringify(currentUser));
         localStorage.setItem("marktech_logged_in", "true");
-        
-        // Show main app
         document.getElementById("loginPortal").style.display = "none";
         document.getElementById("mainApp").style.display = "block";
-        
-        // Update UI with user name
         document.getElementById("userNameDisplay").innerHTML = `👤 ${fullName.split(' ')[0]}`;
         document.getElementById("receiptClientName").innerText = fullName;
         document.getElementById("receiptContact").innerText = emailPhone;
         document.getElementById("liveDate").innerText = new Date().toLocaleString();
-        
-        // Initialize main app features
-        initMainApp();
-    }
-    
-    function socialLogin(provider) {
-        let demoEmail = "";
-        if (provider === 'google') demoEmail = "user@gmail.com";
-        else if (provider === 'facebook') demoEmail = "user@facebook.com";
-        else demoEmail = "254724356178";
-        
-        document.getElementById("loginEmailPhone").value = demoEmail;
-        document.getElementById("loginPassword").value = "demo123";
-        document.getElementById("fullName").value = "Demo User";
-        document.getElementById("gender").value = "Male";
-        document.getElementById("hearAbout").value = "Social Media";
-        handleSignIn();
-    }
-    
-    function showLoginError(msg) {
-        const errorDiv = document.getElementById("loginError");
-        errorDiv.innerText = msg;
-        errorDiv.style.display = "block";
-        setTimeout(() => errorDiv.style.display = "none", 3000);
-    }
-    
-    function logout() {
-        localStorage.removeItem("marktech_logged_in");
-        localStorage.removeItem("marktech_user");
-        currentUser = null;
-        document.getElementById("loginPortal").style.display = "flex";
-        document.getElementById("mainApp").style.display = "none";
-        // Stop music
-        let audio = document.getElementById("bgAudio");
-        audio.pause();
-    }
-    
-    // ========== MAIN APP FUNCTIONS ==========
-    let apiKey = localStorage.getItem("app_api_key") || "MTK-" + Math.random().toString(36).substr(2, 16);
-    let historyArray = JSON.parse(localStorage.getItem("barcodeHist") || "[]");
-    let receiptsArray = JSON.parse(localStorage.getItem("receiptsLog") || "[]");
-    let batchFiles = [];
-    
-    function initMainApp() {
-        generateCode();
-        renderHistory();
-        renderReceiptsLog();
         document.getElementById("apiKeyDisplay").innerHTML = `🔑 ${apiKey}`;
-        // Setup music play on first interaction
-        let audio = document.getElementById("bgAudio");
-        audio.volume = 0.5;
+        generateCode(); renderHistory(); renderReceiptsLog();
     }
+    function socialLogin(provider) { let val = provider==='google'?'user@gmail.com':provider==='facebook'?'fb@facebook.com':'254724356178'; document.getElementById("loginEmailPhone").value=val; document.getElementById("loginPassword").value="secure123"; document.getElementById("fullName").value="Enterprise User"; document.getElementById("gender").value="Male"; document.getElementById("hearAbout").value="Social Media"; handleSignIn(); }
+    function logout() { localStorage.removeItem("marktech_logged_in"); localStorage.removeItem("marktech_user"); currentUser=null; document.getElementById("loginPortal").style.display="flex"; document.getElementById("mainApp").style.display="none"; audioElem.pause(); musicPlaying=false; }
     
-    function generateCode() {
-        let text = document.getElementById("inputData").value.trim();
-        if(!text) { alert("Enter data"); return; }
-        let type = document.getElementById("barcodeType").value;
-        let svg = document.getElementById("barcodeSvg");
-        let qrCanvas = document.getElementById("qrCanvas");
-        if(type === "QR") {
-            svg.style.display = "none";
-            qrCanvas.style.display = "block";
-            QRCode.toCanvas(qrCanvas, text, { width: 280, errorCorrectionLevel: "M" });
-        } else {
-            svg.style.display = "block";
-            qrCanvas.style.display = "none";
-            JsBarcode("#barcodeSvg", text, { format: type, displayValue: true, height: 100, width: 2 });
-        }
-    }
-    
-    function downloadOutput() {
-        let type = document.getElementById("barcodeType").value;
-        if(type === "QR") {
-            let canvas = document.getElementById("qrCanvas");
-            let link = document.createElement("a");
-            link.download = "qrcode.png";
-            link.href = canvas.toDataURL();
-            link.click();
-        } else {
-            let svg = document.getElementById("barcodeSvg");
-            let svgData = new XMLSerializer().serializeToString(svg);
-            let blob = new Blob([svgData], {type: "image/svg+xml"});
-            let url = URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.download = "barcode.svg";
-            a.href = url;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-    }
-    
-    function saveToHistory() {
-        let val = document.getElementById("inputData").value.trim();
-        if(!val) return;
-        historyArray = [val, ...historyArray.filter(v=>v!==val)];
-        if(historyArray.length>12) historyArray.pop();
-        localStorage.setItem("barcodeHist", JSON.stringify(historyArray));
-        renderHistory();
-    }
-    
-    function renderHistory() {
-        let div = document.getElementById("fullHistoryList");
-        if(div) div.innerHTML = historyArray.map(item => `<div class="history-item" onclick="document.getElementById('inputData').value='${item.replace(/'/g, "\\'")}'; generateCode();">📌 ${item.substring(0,35)}</div>`).join('');
-    }
-    
-    function generateApiKey() { apiKey = "MTK-" + Math.random().toString(36).substr(2, 20); localStorage.setItem("app_api_key", apiKey); document.getElementById("apiKeyDisplay").innerHTML = `🔑 ${apiKey}`; document.getElementById("apiTestResult").innerHTML = "✅ New API Key generated!"; }
-    
-    function testApiCall() { document.getElementById("apiTestResult").innerHTML = `✅ API Test Success! Key: ${apiKey} | Status: Active | Plan: Premium Unlimited`; }
-    
-    function runBatchGenerator() {
-        let raw = document.getElementById("batchData").value;
-        let lines = raw.split(/\r?\n/).filter(l=>l.trim().length>0);
-        if(lines.length===0) { alert("Enter data lines"); return; }
-        batchFiles = [];
-        let outputDiv = document.getElementById("batchOutput");
-        outputDiv.style.display = "block";
-        outputDiv.innerHTML = "<strong>📦 Generating...</strong><br>";
-        let completed = 0;
-        lines.forEach((line, idx) => {
-            let format = document.getElementById("barcodeType").value;
-            let isQR = format === "QR";
-            if(isQR) {
-                let canvas = document.createElement("canvas");
-                QRCode.toCanvas(canvas, line.trim(), { width: 200 }, () => {
-                    let dataURL = canvas.toDataURL();
-                    batchFiles.push({ name: `batch_${idx+1}_qrcode.png`, dataURL: dataURL });
-                    outputDiv.innerHTML += `✅ ${line.substring(0,30)} → QR ready.<br>`;
-                    completed++;
-                    if(completed === lines.length) document.getElementById("downloadBatchBtn").style.display = "block";
-                });
-            } else {
-                let svgElem = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                JsBarcode(svgElem, line.trim(), { format: format, height: 80, width: 2 });
-                setTimeout(() => {
-                    let svgData = new XMLSerializer().serializeToString(svgElem);
-                    let blob = new Blob([svgData], {type: "image/svg+xml"});
-                    let url = URL.createObjectURL(blob);
-                    batchFiles.push({ name: `batch_${idx+1}_barcode.svg`, dataURL: url });
-                    outputDiv.innerHTML += `✅ ${line.substring(0,30)} → barcode.<br>`;
-                    completed++;
-                    if(completed === lines.length) document.getElementById("downloadBatchBtn").style.display = "block";
-                }, 50);
-            }
-        });
-    }
-    
-    function downloadBatchZip() {
-        if(batchFiles.length===0) return;
-        let zip = new JSZip();
-        batchFiles.forEach(file => {
-            if(file.dataURL.startsWith('data:image')) {
-                let base64 = file.dataURL.split(',')[1];
-                zip.file(file.name, base64, {base64:true});
-            } else {
-                fetch(file.dataURL).then(res=>res.blob()).then(blob=> zip.file(file.name, blob));
-            }
-        });
-        setTimeout(() => {
-            zip.generateAsync({type:"blob"}).then(content => {
-                let a = document.createElement('a');
-                a.href = URL.createObjectURL(content);
-                a.download = "batch_codes.zip";
-                a.click();
-                URL.revokeObjectURL(content);
-            });
-        }, 300);
-    }
-    
-    function submitSupportTicket() {
-        let subject = document.getElementById("supportSubject").value;
-        let msg = document.getElementById("supportMsg").value;
-        if(!subject || !msg) { alert("Fill subject and message"); return; }
-        document.getElementById("ticketResponse").innerHTML = `🎫 Ticket #${Math.floor(Math.random()*10000)} created! Support will respond via WhatsApp within 1 hour.`;
-        document.getElementById("supportSubject").value = "";
-        document.getElementById("supportMsg").value = "";
-    }
-    
-    function showFeatureDetail(feature) {
-        const details = {
-            batch: { title: "📦 Batch Generator", desc: "Generate hundreds of barcodes/QR codes at once. Supports CSV/multi-line input. Download as ZIP." },
-            unlimited: { title: "♾️ Unlimited Credits", desc: "No generation limits! Create unlimited barcodes and QR codes. Perfect for enterprise needs." },
-            api: { title: "⚙️ API Access", desc: `REST API endpoint with your key: ${apiKey}. Integrate barcode generation into your apps.` },
-            priority: { title: "🎯 Priority Support", desc: "24/7 dedicated support via WhatsApp + Email. Response within 1 hour." }
-        };
-        document.getElementById("modalTitle").innerText = details[feature].title;
-        document.getElementById("modalDesc").innerHTML = details[feature].desc;
-        document.getElementById("featureModal").style.display = "flex";
-    }
-    function closeModal() { document.getElementById("featureModal").style.display = "none"; }
-    
-    // Receipt functions
-    function setupReceipt() {
-        document.getElementById("editReceiptBtn").onclick = () => { let area = document.getElementById("receiptEditableArea"); area.contentEditable = "true"; area.style.outline = "3px solid #ff9800"; alert("Edit mode ON"); };
-        document.getElementById("saveReceiptBtn").onclick = () => { let area = document.getElementById("receiptEditableArea"); area.contentEditable = "false"; area.style.outline = "none"; let content = area.innerHTML; receiptsArray.unshift({ id: "REC-"+Date.now(), content: content, date: new Date().toLocaleString() }); if(receiptsArray.length>10) receiptsArray.pop(); localStorage.setItem("receiptsLog", JSON.stringify(receiptsArray)); renderReceiptsLog(); alert("Receipt saved!"); };
-    }
-    function updateReceiptFromProfile() { if(currentUser) { document.getElementById("receiptClientName").innerText = currentUser.name; document.getElementById("receiptContact").innerText = currentUser.emailPhone; alert("Receipt updated with your profile info!"); } }
-    function renderReceiptsLog() { let logDiv = document.getElementById("receiptsLogList"); if(logDiv) logDiv.innerHTML = receiptsArray.map((rec,i) => `<div class="history-item" onclick="loadReceipt(${i})">🧾 ${rec.id || rec.date.substring(0,16)}</div>`).join(''); }
-    function loadReceipt(idx) { let rec = receiptsArray[idx]; if(rec && rec.content) { document.getElementById("receiptEditableArea").innerHTML = rec.content; alert("Receipt loaded"); } }
-    function copyText(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
-    
-    // Music (fixed playing)
-    let audioElem = document.getElementById("bgAudio");
-    let musicPlaying = false;
-    function toggleMusic() { if(musicPlaying) { audioElem.pause(); musicPlaying=false; } else { audioElem.play().catch(e=>console.log); musicPlaying=true; } }
-    
-    function toggleTheme() { document.body.classList.toggle("light"); }
-    
-    function initMovingLines() { let container = document.getElementById("movingLines"); for(let i=0;i<30;i++) { let line = document.createElement("div"); line.className="line"; line.style.left=Math.random()*100+"%"; line.style.animationDuration=5+Math.random()*9+"s"; line.style.animationDelay=Math.random()*8+"s"; container.appendChild(line); } }
-    
-    // Check if already logged in
-    window.addEventListener("DOMContentLoaded", () => {
-        initMovingLines();
-        const loggedIn = localStorage.getItem("marktech_logged_in");
-        const savedUser = localStorage.getItem("marktech_user");
-        if(loggedIn === "true" && savedUser) {
-            currentUser = JSON.parse(savedUser);
-            document.getElementById("loginPortal").style.display = "none";
-            document.getElementById("mainApp").style.display = "block";
-            document.getElementById("userNameDisplay").innerHTML = `👤 ${currentUser.name.split(' ')[0]}`;
-            document.getElementById("receiptClientName").innerText = currentUser.name;
-            document.getElementById("receiptContact").innerText = currentUser.emailPhone;
-            document.getElementById("liveDate").innerText = new Date().toLocaleString();
-            initMainApp();
-        } else {
-            document.getElementById("loginPortal").style.display = "flex";
-            document.getElementById("mainApp").style.display = "none";
-        }
-        setupReceipt();
-    });
+    function generateCode() { let text=document.getElementById("inputData").value.trim(); if(!text) return; let type=document.getElementById("barcodeType").value; let svg=document.getElementById("barcodeSvg"); let qrCanvas=document.getElementById("qrCanvas"); if(type==="QR"){ svg.style.display="none"; qrCanvas.style.display="block"; QRCode.toCanvas(qrCanvas,text,{width:280}); } else { svg.style.display="block"; qrCanvas.style.display="none"; JsBarcode("#barcodeSvg",text,{format:type,displayValue:true,height:100,width:2}); } }
+    function downloadOutput() { let type=document.getElementById("barcodeType").value; if(type==="QR"){ let canvas=document.getElementById("qrCanvas"); let a=document.createElement("a"); a.download="qrcode.png"; a.href=canvas.toDataURL(); a.click(); } else { let svg=document.getElementById("barcodeSvg"); let blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:"image/svg+xml"}); let url=URL.createObjectURL(blob); let a=document.createElement("a"); a.download="barcode.svg"; a.href=url; a.click(); URL.revokeObjectURL(url); } }
+    function saveToHistory() { let val=document.getElementById("inputData").value.trim(); if(!val) return; historyArray=[val,...historyArray.filter(v=>v!==val)]; if(historyArray.length>12) historyArray.pop(); localStorage.setItem("barcodeHist",JSON.stringify(historyArray)); renderHistory(); alert("Saved to history"); }
+    function renderHistory() { let div=document.getElementById("fullHistoryList"); if(div) div.innerHTML=historyArray.map(item=>`<div class="history-item" onclick="document.getElementById('inputData').value='${item.replace(/'/g,"\\'")}'; generateCode();">📌 ${item.substring(0,35)}</div>`).join(''); }
+    function generateApiKey() { apiKey="MTK-"+Math.random().toString(36).substr(2,20); localStorage.setItem("app_api_key",apiKey); document.getElementById("apiKeyDisplay").innerHTML=`🔑 ${apiKey}`; document.getElementById("apiTestResult").innerHTML="✅ New API credentials generated"; }
+    function testApiCall() { document.getElementById("apiTestResult").innerHTML=`✅ API Test Successful | Key: ${apiKey} | Status: Active | Plan: Unlimited`; }
+    function runBatchGenerator() { let lines=document.getElementById("batchData").value.split(/\r?\n/).filter(l=>l.trim()); if(lines.length===0){ alert("Enter data lines"); return; } batchFiles=[]; let outDiv=document.getElementById("batchOutput"); outDiv.style.display="block"; outDiv.innerHTML="<strong>⚡ Generating Batch...</strong><br>"; let completed=0; lines.forEach((line,idx)=>{ let isQR=document.getElementById("barcodeType").value==="QR"; if(isQR){ let canvas=document.createElement("canvas"); QRCode.toCanvas(canvas,line.trim(),{width:200},()=>{ batchFiles.push({name:`batch_${idx+1}_qrcode.png`,dataURL:canvas.toDataURL()}); outDiv.innerHTML+=`✅ ${line.substring(0,30)} → QR ready.<br>`; completed++; if(completed===lines.length) document.getElementById("downloadBatchBtn").style.display="block"; }); } else { let svg=document.createElementNS("http://www.w3.org/2000/svg","svg"); JsBarcode(svg,line.trim(),{format:document.getElementById("barcodeType").value,height:80,width:2}); setTimeout(()=>{ let svgData=new XMLSerializer().serializeToString(svg); let blob=new Blob([svgData],{type:"image/svg+xml"}); batchFiles.push({name:`batch_${idx+1}_barcode.svg`,dataURL:URL.createObjectURL(blob)}); outDiv.innerHTML+=`✅ ${line.substring(0,30)} → barcode.<br>`; completed++; if(completed===lines.length) document.getElementById("downloadBatchBtn").style.display="block"; },50); } }); }
+    function downloadBatchZip() { if(batchFiles.length===0) return; let zip=new JSZip(); batchFiles.forEach(f=>{ if(f.dataURL.startsWith('data:image')){ let base64=f.dataURL.split(',')[1]; zip.file(f.name,base64,{base64:true}); } else { fetch(f.dataURL).then(res=>res.blob()).then(blob=>zip.file(f.name,blob)); } }); setTimeout(()=>{ zip.generateAsync({type:"blob"}).then(content=>{ let a=document.createElement("a"); a.href=URL.createObjectURL(content); a.download="batch_codes.zip"; a.click(); }); },400); }
+    function submitSupportTicket() { let sub=document.getElementById("supportSubject").value, msg=document.getElementById("supportMsg").value; if(!sub||!msg){ alert("Fill subject & message"); return; } document.getElementById("ticketResponse").innerHTML=`✅ Priority Ticket #${Math.floor(Math.random()*9000+1000)} opened. Response within 1 hour via WhatsApp/Email.`; document.getElementById("supportSubject").value=""; document.getElementById("supportMsg").value=""; }
+    function showFeatureDetail(f){ let details={batch:{title:"📦 Batch Generator Engine",desc:"Generate thousands of barcodes/QR codes from CSV or multi-line input. Perfect for inventory, labels, and mass production. Output as ZIP archive."},unlimited:{title:"♾️ Unlimited Credits",desc:"No caps, no throttling. Generate unlimited barcodes, QR codes, and API calls. Enterprise-grade throughput."},api:{title:"⚙️ REST API Access",desc:`Your API Key: ${apiKey}\nEndpoint: https://api.marktech.tech/v1/generate\nFull documentation, webhooks, and SDK support.`},priority:{title:"🎯 Priority Support",desc:"24/7 dedicated engineer support. 1-hour response SLA. Direct WhatsApp and email channel."}}; document.getElementById("modalTitle").innerText=details[f].title; document.getElementById("modalDesc").innerHTML=details[f].desc.replace(/\n/g,'<br>'); document.getElementById("featureModal").style.display="flex"; }
+    function closeModal(){ document.getElementById("featureModal").style.display="none"; }
+    function setupReceipt(){ document.getElementById("editReceiptBtn").onclick=()=>{ let area=document.getElementById("receiptEditableArea"); area.contentEditable="true"; area.style.outline="3px solid #ff9800"; alert("Edit mode active"); }; document.getElementById("saveReceiptBtn").onclick=()=>{ let area=document.getElementById("receiptEditableArea"); area.contentEditable="false"; area.style.outline="none"; receiptsArray.unshift({id:"REC-"+Date.now(),content:area.innerHTML,date:new Date().toLocaleString()}); if(receiptsArray.length>10) receiptsArray.pop(); localStorage.setItem("receiptsLog",JSON.stringify(receiptsArray)); renderReceiptsLog(); alert("Receipt saved"); }; }
+    function updateReceiptFromProfile(){ if(currentUser){ document.getElementById("receiptClientName").innerText=currentUser.name; document.getElementById("receiptContact").innerText=currentUser.emailPhone; alert("Receipt updated"); } }
+    function renderReceiptsLog(){ let logDiv=document.getElementById("receiptsLogList"); if(logDiv) logDiv.innerHTML=receiptsArray.map((rec,i)=>`<div class="history-item" onclick="loadReceipt(${i})">🧾 ${rec.id || rec.date.substring(0,16)}</div>`).join(''); }
+    function loadReceipt(idx){ let rec=receiptsArray[idx]; if(rec&&rec.content){ document.getElementById("receiptEditableArea").innerHTML=rec.content; alert("Receipt loaded"); } }
+    function copyText(t){ navigator.clipboard.writeText(t); alert("Copied!"); }
+    function toggleMusic(){ if(musicPlaying){ audioElem.pause(); musicPlaying=false; } else { audioElem.play().catch(e=>console.log); musicPlaying=true; } }
+    function toggleTheme(){ document.body.classList.toggle("light"); }
+    function initMovingLines(){ let c=document.getElementById("movingLines"); for(let i=0;i<40;i++){ let l=document.createElement("div"); l.className="line"; l.style.left=Math.random()*100+"%"; l.style.animationDuration=5+Math.random()*8+"s"; l.style.animationDelay=Math.random()*7+"s"; c.appendChild(l); } }
+    window.addEventListener("DOMContentLoaded",()=>{ initMovingLines(); let logged=localStorage.getItem("marktech_logged_in"); let savedUser=localStorage.getItem("marktech_user"); if(logged==="true"&&savedUser){ currentUser=JSON.parse(savedUser); document.getElementById("loginPortal").style.display="none"; document.getElementById("mainApp").style.display="block"; document.getElementById("userNameDisplay").innerHTML=`👤 ${currentUser.name.split(' ')[0]}`; document.getElementById("receiptClientName").innerText=currentUser.name; document.getElementById("receiptContact").innerText=currentUser.emailPhone; document.getElementById("liveDate").innerText=new Date().toLocaleString(); document.getElementById("apiKeyDisplay").innerHTML=`🔑 ${apiKey}`; generateCode(); renderHistory(); renderReceiptsLog(); } else { document.getElementById("loginPortal").style.display="flex"; document.getElementById("mainApp").style.display="none"; } setupReceipt(); });
 </script>
 </body>
 </html>
