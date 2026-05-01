@@ -1,11 +1,15 @@
-<head>
-  <title>MARK TECH · BARCODE API STUDIO</title>
+<div align="center">
 
-  <meta property="og:title" content="MARK TECH · BARCODE API STUDIO">
-  <meta property="og:description" content="Barcode Solutions • API Development • Tech Innovation">
-  <meta property="og:image" content="https://mark-tech-bar-code.vercel.app/logo.png">
-  <meta property="og:url" content="https://mark-tech-bar-code.vercel.app/">
-  <meta property="og:type" content="website">
+  <img src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/logo.png" 
+       width="650" 
+       alt="MARK TECH · BARCODE API STUDIO"/>
 
-  <meta name="twitter:card" content="summary_large_image">
-</head>
+  <h1>MARK TECH · BARCODE API STUDIO</h1>
+
+  <p>
+    🚀 <strong>Barcode Solutions</strong> • 
+    <strong>API Development</strong> • 
+    <strong>Tech Innovation</strong>
+  </p>
+
+</div>
