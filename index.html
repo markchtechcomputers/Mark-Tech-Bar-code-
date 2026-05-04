@@ -64,14 +64,15 @@
         .title-section { text-align: center; padding: 28px 16px; }
         .title-section h1 { font-size: clamp(1.8rem, 6vw, 3.5rem); font-weight: 800; text-shadow: 0 0 15px rgba(0,224,255,0.5); letter-spacing: 1px; }
         
+        /* Background Remover Trigger Button - Mobile Optimized */
         .bgremover-trigger { text-align: center; margin: 10px auto 5px; max-width: 1400px; padding: 0 16px; }
-        .bgremover-card { background: linear-gradient(135deg, #1a2a4f, #0f172a); border-radius: 60px; padding: 12px 28px; display: inline-flex; align-items: center; gap: 16px; backdrop-filter: blur(8px); border: 1px solid rgba(0,224,255,0.6); box-shadow: 0 8px 20px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s ease; font-weight: 700; font-size: 1.2rem; }
-        .bgremover-card:hover { transform: translateY(-3px); background: linear-gradient(135deg, #00e0ff, #00ffaa); border-color: white; box-shadow: 0 12px 28px rgba(0,224,255,0.4); }
+        .bgremover-card { background: linear-gradient(135deg, #1a2a4f, #0f172a); border-radius: 60px; padding: 12px 20px; display: inline-flex; align-items: center; gap: 12px; backdrop-filter: blur(8px); border: 1px solid rgba(0,224,255,0.6); box-shadow: 0 8px 20px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s ease; font-weight: 700; font-size: clamp(0.9rem, 4vw, 1.2rem); flex-wrap: wrap; justify-content: center; }
+        .bgremover-card:hover { transform: translateY(-3px); background: linear-gradient(135deg, #00e0ff, #00ffaa); border-color: white; }
         .bgremover-card:hover .bg-icon, .bgremover-card:hover .bg-text { color: #000; }
-        .bg-icon { font-size: 1.8rem; }
+        .bg-icon { font-size: clamp(1.2rem, 5vw, 1.8rem); }
         .bg-text { letter-spacing: 1px; background: linear-gradient(135deg, #fff, #a5f0ff); -webkit-background-clip: text; background-clip: text; color: transparent; transition: 0.2s; }
         
-        /* Manlung Cyber Security Section */
+        /* Manlung Cyber Security Section - After Barcode */
         .cyber-section {
             max-width: 1400px;
             margin: 30px auto;
@@ -93,42 +94,44 @@
         }
         .cyber-header {
             background: linear-gradient(135deg, #ff3366, #cc0044);
-            padding: 24px 32px;
+            padding: 20px 24px;
             text-align: center;
         }
         .cyber-header h2 {
-            font-size: 2rem;
+            font-size: clamp(1.4rem, 6vw, 2rem);
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
         .cyber-header p {
             opacity: 0.9;
             margin-top: 8px;
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
         }
         .cyber-body {
-            padding: 24px 32px;
+            padding: 20px 24px;
             display: flex;
             flex-wrap: wrap;
-            gap: 24px;
+            gap: 20px;
             align-items: center;
             justify-content: space-between;
         }
         .cyber-info {
             flex: 2;
-            min-width: 250px;
+            min-width: 220px;
         }
         .cyber-info h3 {
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
             margin-bottom: 12px;
             color: #ff99aa;
         }
         .cyber-info p {
             line-height: 1.6;
             margin-bottom: 16px;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
         .cyber-stats {
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
             background: rgba(0,0,0,0.5);
             border-radius: 24px;
             padding: 16px;
@@ -136,7 +139,7 @@
         }
         .threat-alert {
             font-family: monospace;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #ff6666;
             border-top: 1px solid #ff3366;
             margin-top: 16px;
@@ -145,7 +148,7 @@
         .cyber-btn {
             background: #ff3366;
             color: white;
-            padding: 12px 28px;
+            padding: 10px 24px;
             border-radius: 60px;
             font-weight: bold;
             display: inline-block;
@@ -154,12 +157,14 @@
             text-decoration: none;
             border: none;
             cursor: pointer;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
         .cyber-btn:hover {
             background: #ff6680;
             transform: scale(1.02);
         }
         
+        /* Modal - Mobile Optimized */
         .ai-remover-modal {
             position: fixed;
             top: 0;
@@ -172,46 +177,44 @@
             display: none;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
         .ai-remover-panel {
-            max-width: 1400px;
+            max-width: 1300px;
             width: 100%;
-            max-height: 92vh;
+            max-height: 90vh;
             background: #0f172ae6;
             backdrop-filter: blur(20px);
-            border-radius: 2rem;
+            border-radius: 1.5rem;
             border: 2px solid #00e0ff;
             overflow-y: auto;
-            padding: 1.8rem;
+            padding: 1.2rem;
             box-shadow: 0 25px 45px rgba(0,0,0,0.5);
         }
         .close-modal {
             position: absolute;
-            top: 24px;
-            right: 32px;
+            top: 20px;
+            right: 20px;
             background: #ff4757;
             border: none;
-            font-size: 1.5rem;
-            padding: 8px 22px;
+            font-size: 1.2rem;
+            padding: 6px 16px;
             border-radius: 60px;
             font-weight: bold;
             cursor: pointer;
             color: white;
             z-index: 2100;
-            transition: 0.2s;
         }
-        .close-modal:hover { background: #ff6b7c; transform: scale(1.02); }
-        .remover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        @media (max-width: 900px) { .remover-grid { grid-template-columns: 1fr; } }
-        .remover-card { background: rgba(0,0,0,0.65); border-radius: 1.8rem; padding: 1.5rem; border: 1px solid rgba(0,224,255,0.4); }
-        .remover-title { font-size: 1.4rem; margin-bottom: 1.2rem; display: flex; gap: 10px; align-items: center; font-weight: 700; }
-        .upload-area-ai { border: 2px dashed #3b82f6; border-radius: 1.2rem; padding: 1.8rem; text-align: center; cursor: pointer; background: #0a0f1c; transition: 0.2s; }
+        .remover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        @media (max-width: 800px) { .remover-grid { grid-template-columns: 1fr; } }
+        .remover-card { background: rgba(0,0,0,0.65); border-radius: 1.5rem; padding: 1.2rem; border: 1px solid rgba(0,224,255,0.4); }
+        .remover-title { font-size: 1.2rem; margin-bottom: 1rem; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .upload-area-ai { border: 2px dashed #3b82f6; border-radius: 1rem; padding: 1.5rem; text-align: center; cursor: pointer; background: #0a0f1c; transition: 0.2s; }
         .upload-area-ai:hover { background: #1e293b; border-color: #00e0ff; }
-        .quality-selector { display: flex; gap: 12px; margin: 15px 0; flex-wrap: wrap; }
+        .quality-selector { display: flex; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
         .quality-option {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             background: #334155;
             border: none;
             border-radius: 50px;
@@ -220,49 +223,54 @@
             font-weight: 600;
             transition: 0.2s;
             text-align: center;
+            font-size: 0.75rem;
         }
         .quality-option.active { background: #00e0ff; color: #000; box-shadow: 0 0 15px rgba(0,224,255,0.5); }
-        .btn-primary-ai { background: linear-gradient(135deg, #667eea, #764ba2); border: none; padding: 14px; border-radius: 60px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; color: white; font-size: 1rem; transition: 0.2s; }
+        .btn-primary-ai { background: linear-gradient(135deg, #667eea, #764ba2); border: none; padding: 12px; border-radius: 60px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 12px; color: white; font-size: 0.9rem; transition: 0.2s; }
         .btn-primary-ai:hover { transform: translateY(-2px); filter: brightness(1.05); }
-        .btn-secondary-ai { background: #2d3748; border: none; padding: 14px; border-radius: 60px; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.2s; font-weight: 600; }
-        .btn-secondary-ai:hover { background: #4a5568; transform: translateY(-2px); }
-        .canvas-preview { background: #0f172a; border-radius: 1.2rem; padding: 1rem; text-align: center; overflow-x: auto; display: flex; justify-content: center; align-items: center; min-height: 300px; }
-        canvas { max-width: 100%; height: auto; border-radius: 16px; background: repeating-conic-gradient(#ccc 0deg 90deg, #fff 90deg 180deg); box-shadow: 0 8px 20px rgba(0,0,0,0.3); object-fit: contain; }
-        .loader-spinner { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
+        .btn-secondary-ai { background: #2d3748; border: none; padding: 12px; border-radius: 60px; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.2s; font-weight: 600; font-size: 0.9rem; }
+        .canvas-preview { background: #0f172a; border-radius: 1rem; padding: 1rem; text-align: center; overflow-x: auto; display: flex; justify-content: center; align-items: center; min-height: 250px; }
+        canvas { max-width: 100%; height: auto; border-radius: 16px; background: repeating-conic-gradient(#ccc 0deg 90deg, #fff 90deg 180deg); object-fit: contain; }
+        .loader-spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .progress-container { margin-top: 15px; background: #1e293b; border-radius: 60px; overflow: hidden; height: 8px; }
+        .progress-container { margin-top: 12px; background: #1e293b; border-radius: 60px; overflow: hidden; height: 6px; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, #00e0ff, #00ffaa); width: 0%; transition: width 0.3s; }
         
         .barcode-balanced-section { max-width: 1400px; margin: 20px auto; padding: 0 16px; }
-        .split-control-output { display: flex; flex-wrap: wrap; gap: 28px; }
-        .controls-card, .output-card { flex: 1; min-width: 280px; }
-        .glass-card { background: rgba(10, 20, 35, 0.85); backdrop-filter: blur(12px); border-radius: 32px; padding: 24px; border: 1px solid rgba(0,200,255,0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.3); transition: 0.2s; height: 100%; }
-        .barcode-preview-area { background: #ffffff; border-radius: 28px; padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; }
-        .barcode-preview-area svg, .barcode-preview-area canvas { max-width: 100%; height: auto; background: white; border-radius: 20px; }
-        .action-buttons { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
-        .action-buttons button { flex: 1; margin-top: 0; padding: 10px; font-size: 0.9rem; }
+        .split-control-output { display: flex; flex-wrap: wrap; gap: 20px; }
+        .controls-card, .output-card { flex: 1; min-width: 260px; }
+        .glass-card { background: rgba(10, 20, 35, 0.85); backdrop-filter: blur(12px); border-radius: 28px; padding: 20px; border: 1px solid rgba(0,200,255,0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.3); transition: 0.2s; height: 100%; }
+        .barcode-preview-area { background: #ffffff; border-radius: 24px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 260px; }
+        .barcode-preview-area svg, .barcode-preview-area canvas { max-width: 100%; height: auto; background: white; border-radius: 16px; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .action-buttons button { flex: 1; margin-top: 0; padding: 10px; font-size: 0.85rem; }
         
         #inputData { color: #000000 !important; background: #ffffff !important; font-weight: 600 !important; border: 2px solid #00e0ff !important; }
         input, select, textarea { width: 100%; padding: 12px 16px; margin: 8px 0; border-radius: 60px; border: none; background: #141e2c; color: white; font-weight: 500; font-size: 1rem; }
         
-        button { background: linear-gradient(135deg, #00e0ff, #00ffaa); color: #000; font-weight: 700; padding: 11px; border-radius: 60px; cursor: pointer; width: 100%; margin-top: 8px; border: none; transition: 0.2s; font-size: 0.95rem; }
+        button { background: linear-gradient(135deg, #00e0ff, #00ffaa); color: #000; font-weight: 700; padding: 11px; border-radius: 60px; cursor: pointer; width: 100%; margin-top: 8px; border: none; transition: 0.2s; font-size: 0.9rem; }
         button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,224,255,0.5); }
         
-        .feature-grid { display: flex; flex-wrap: wrap; gap: 14px; margin: 20px 0; }
-        .feature-btn { background: linear-gradient(135deg, #1f2a48, #162030); padding: 12px 18px; border-radius: 60px; font-weight: 600; text-align: center; flex: 1 0 120px; cursor: pointer; border: 1px solid #00e0ff55; transition: 0.2s; font-size: 0.85rem; }
+        .feature-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+        .feature-btn { background: linear-gradient(135deg, #1f2a48, #162030); padding: 10px 16px; border-radius: 60px; font-weight: 600; text-align: center; flex: 1 0 100px; cursor: pointer; border: 1px solid #00e0ff55; transition: 0.2s; font-size: 0.8rem; }
         .feature-btn:hover { transform: translateY(-3px); background: #00e0ff; color: #000; }
         
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 24px; margin-top: 20px; }
-        .info-card { background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); border-radius: 28px; padding: 22px; border-left: 4px solid #00e0ff; transition: 0.2s; }
-        .receipt-card { background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 32px; border: 1px solid gold; padding: 24px; margin: 25px auto; max-width: 1200px; }
-        .history-flex { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
-        .history-item { background: rgba(0,224,255,0.15); padding: 8px 22px; border-radius: 40px; cursor: pointer; font-weight: 500; border: 1px solid #00e0ff; font-size: 0.85rem; transition: 0.1s; }
-        .history-item:hover { background: #00e0ff; color: #000; transform: scale(1.02); }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; margin-top: 20px; }
+        .info-card { background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); border-radius: 28px; padding: 20px; border-left: 4px solid #00e0ff; transition: 0.2s; }
+        .receipt-card { background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 28px; border: 1px solid gold; padding: 20px; margin: 25px auto; max-width: 1200px; }
+        .history-flex { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+        .history-item { background: rgba(0,224,255,0.15); padding: 6px 18px; border-radius: 40px; cursor: pointer; font-weight: 500; border: 1px solid #00e0ff; font-size: 0.8rem; transition: 0.1s; }
         .modal-overlay { position: fixed; top:0;left:0;width:100%;height:100%; background: rgba(0,0,0,0.97); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
-        .modal-content { background: #0f172a; padding: 28px; border-radius: 36px; max-width: 450px; width: 100%; border: 2px solid #00e0ff; position: relative; }
-        .float-wa { position: fixed; right: 18px; bottom: 24px; background: #25D366; border-radius: 50px; padding: 10px 20px; font-weight: bold; cursor: pointer; z-index: 99; box-shadow: 0 5px 20px rgba(0,0,0,0.3); font-size: 14px; }
+        .modal-content { background: #0f172a; padding: 24px; border-radius: 32px; max-width: 400px; width: 100%; border: 2px solid #00e0ff; position: relative; }
+        .float-wa { position: fixed; right: 16px; bottom: 20px; background: #25D366; border-radius: 50px; padding: 8px 18px; font-weight: bold; cursor: pointer; z-index: 99; box-shadow: 0 5px 20px rgba(0,0,0,0.3); font-size: 13px; }
         
-        @media (max-width: 700px) { .glass-card { padding: 18px; } .split-control-output { gap: 18px; } }
+        @media (max-width: 700px) {
+            .glass-card { padding: 16px; }
+            .split-control-output { gap: 16px; }
+            .topbar { padding: 10px 16px; }
+            .brand-text { font-size: 1.1rem; }
+            .spinning-logo { width: 36px; height: 36px; font-size: 18px; }
+        }
         .batch-results { max-height: 180px; overflow-y: auto; background: #0a0f1c; border-radius: 24px; padding: 12px; margin-top: 12px; font-size: 12px; }
         #receiptEditableArea { transition: 0.1s; }
     </style>
@@ -298,34 +306,9 @@
         </div>
     </div>
     
-    <!-- Manlung Cyber Security Section -->
-    <div class="cyber-section">
-        <div class="cyber-card" onclick="window.open('https://manlung-tech-city.vercel.app/', '_blank')">
-            <div class="cyber-header">
-                <h2>🛡️ MANLUNG CYBER SECURITY</h2>
-                <p>Advanced Cyber Security & Cyber Café Services | Powered by Manlung Tech City</p>
-            </div>
-            <div class="cyber-body">
-                <div class="cyber-info">
-                    <h3>🔒 Enterprise-Grade Protection + Community Services</h3>
-                    <p>Penetration Testing • 24/7 SOC Monitoring • Incident Response • Cloud Security • DevSecOps • IAM • KRA & eCitizen Support • Printing & Digital Services</p>
-                    <div class="threat-alert">
-                        ⚡ Live Threat Intel: Active Defense | Zero-Trust Architecture | Real-time Breach Detection
-                    </div>
-                    <button class="cyber-btn" onclick="event.stopPropagation(); window.open('https://manlung-tech-city.vercel.app/', '_blank')">🚀 VISIT MANLUNG TECH CITY →</button>
-                </div>
-                <div class="cyber-stats">
-                    <div style="font-size: 2rem;">🛡️</div>
-                    <div style="font-weight: 800; margin: 8px 0;">24/7 Protection</div>
-                    <div style="font-size: 0.8rem; opacity: 0.8;">Incident Response Ready</div>
-                    <div style="margin-top: 12px; font-family: monospace;">#1 Cyber Security Hub</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <div class="title-section"><h1>MARK TECH · CHROMA CORE STUDIO</h1><p>Dynamic ambient shift · every 5 minutes new premium tone</p></div>
 
+    <!-- BALANCED BARCODE SECTION -->
     <div class="barcode-balanced-section">
         <div class="split-control-output">
             <div class="controls-card">
@@ -359,14 +342,41 @@
         </div>
     </div>
 
+    <!-- Manlung Cyber Security Section - AFTER BARCODE SECTION -->
+    <div class="cyber-section">
+        <div class="cyber-card" onclick="window.open('https://manlung-tech-city.vercel.app/', '_blank')">
+            <div class="cyber-header">
+                <h2>🛡️ MANLUNG CYBER SECURITY</h2>
+                <p>Advanced Cyber Security & Cyber Café Services | Powered by Manlung Tech City</p>
+            </div>
+            <div class="cyber-body">
+                <div class="cyber-info">
+                    <h3>🔒 Enterprise-Grade Protection + Community Services</h3>
+                    <p>Penetration Testing • 24/7 SOC Monitoring • Incident Response • Cloud Security • DevSecOps • IAM • KRA & eCitizen Support • Printing & Digital Services</p>
+                    <div class="threat-alert">
+                        ⚡ Live Threat Intel: Active Defense | Zero-Trust Architecture | Real-time Breach Detection
+                    </div>
+                    <button class="cyber-btn" onclick="event.stopPropagation(); window.open('https://manlung-tech-city.vercel.app/', '_blank')">🚀 VISIT MANLUNG TECH CITY →</button>
+                </div>
+                <div class="cyber-stats">
+                    <div style="font-size: 2rem;">🛡️</div>
+                    <div style="font-weight: 800; margin: 8px 0;">24/7 Protection</div>
+                    <div style="font-size: 0.75rem; opacity: 0.8;">Incident Response Ready</div>
+                    <div style="margin-top: 12px; font-family: monospace; font-size: 0.7rem;">#1 Cyber Security Hub</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Features Row -->
     <div style="max-width:1400px; margin: 28px auto; padding:0 16px;">
         <div class="glass-card">
             <h3>✨ Premium Features Suite</h3>
             <div class="feature-grid"><div class="feature-btn" onclick="showFeatureDetail('batch')">📦 Batch Generator</div><div class="feature-btn" onclick="showFeatureDetail('unlimited')">♾️ Unlimited Credits</div><div class="feature-btn" onclick="showFeatureDetail('api')">⚙️ API Access</div><div class="feature-btn" onclick="showFeatureDetail('priority')">🎯 Priority Support</div></div>
-            <div style="display:flex; flex-wrap:wrap; gap:24px;">
-                <div style="flex:1; min-width:240px;"><h4>📦 Batch Processing Engine</h4><textarea id="batchData" rows="3" placeholder="Enter values per line&#10;PRODUCT-001&#10;PRODUCT-002"></textarea><button onclick="runBatchGenerator()">🚀 Generate Batch</button><div id="batchOutput" class="batch-results" style="display:none;"></div><button id="downloadBatchBtn" onclick="downloadBatchZip()" style="display:none; background:#ff9800;">📥 Download ZIP</button></div>
-                <div style="flex:1; min-width:240px;"><h4>🎯 Priority Support Desk</h4><input type="text" id="supportSubject" placeholder="Subject"><textarea id="supportMsg" rows="2" placeholder="Describe your technical issue..."></textarea><button onclick="submitSupportTicket()">📨 Submit Priority Ticket</button><div id="ticketResponse" style="font-size:12px; margin-top:8px;"></div></div>
-                <div style="flex:1; min-width:240px;"><h3>⚙️ Developer API Access</h3><div style="background:#0a0f1a; padding:10px; border-radius:24px; font-family:monospace; font-size:12px; word-break:break-all;" id="apiKeyDisplay">🔑 ****************</div><button onclick="generateApiKey()">🔄 Regenerate API Key</button><button onclick="testApiCall()">🔌 Test API Connection</button><div id="apiTestResult" style="font-size:12px; margin-top:8px;"></div></div>
+            <div style="display:flex; flex-wrap:wrap; gap:20px;">
+                <div style="flex:1; min-width:220px;"><h4>📦 Batch Processing Engine</h4><textarea id="batchData" rows="3" placeholder="Enter values per line&#10;PRODUCT-001&#10;PRODUCT-002"></textarea><button onclick="runBatchGenerator()">🚀 Generate Batch</button><div id="batchOutput" class="batch-results" style="display:none;"></div><button id="downloadBatchBtn" onclick="downloadBatchZip()" style="display:none; background:#ff9800;">📥 Download ZIP</button></div>
+                <div style="flex:1; min-width:220px;"><h4>🎯 Priority Support Desk</h4><input type="text" id="supportSubject" placeholder="Subject"><textarea id="supportMsg" rows="2" placeholder="Describe your technical issue..."></textarea><button onclick="submitSupportTicket()">📨 Submit Priority Ticket</button><div id="ticketResponse" style="font-size:12px; margin-top:8px;"></div></div>
+                <div style="flex:1; min-width:220px;"><h3>⚙️ Developer API Access</h3><div style="background:#0a0f1a; padding:10px; border-radius:24px; font-family:monospace; font-size:11px; word-break:break-all;" id="apiKeyDisplay">🔑 ****************</div><button onclick="generateApiKey()">🔄 Regenerate API Key</button><button onclick="testApiCall()">🔌 Test API Connection</button><div id="apiTestResult" style="font-size:11px; margin-top:8px;"></div></div>
             </div>
         </div>
     </div>
@@ -375,39 +385,39 @@
     
     <div class="why-section" style="max-width:1400px; margin: 20px auto; padding:0 16px;"><div class="glass-card"><h2>🏆 Why Choose MARK TECH?</h2><div class="info-grid"><div class="info-card"><h3>🚀 Enterprise Grade</h3><p>Military-grade encryption, 99.99% uptime, and global CDN for lightning-fast barcode generation.</p></div><div class="info-card"><h3>💡 Developer First</h3><p>RESTful API, SDKs, webhooks, and comprehensive documentation for seamless integration.</p></div><div class="info-card"><h3>🌍 Global Scale</h3><p>Generate millions of barcodes/QR codes monthly. Trusted by 500+ businesses worldwide.</p></div><div class="info-card"><h3>🎯 Priority Support</h3><p>Direct channel to senior engineers, 1-hour response time, and dedicated account manager.</p></div></div></div></div>
 
-    <div class="receipt-card"><div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;"><h3>🧾 OFFICIAL RECEIPT</h3><div><button id="editReceiptBtn" style="width:auto; background:#ff9800; padding:8px 16px;">✏️ Edit</button><button id="saveReceiptBtn" style="width:auto; background:#2e7d32; padding:8px 16px;">💾 Save</button></div></div><div id="receiptEditableArea" style="background:#0f172a; border-radius:24px; padding:20px; font-family:monospace; margin-top:14px; font-size:0.9rem;" contenteditable="false">✅ MARK TECH OFFICIAL RECEIPT<br>Receipt ID: MTX-<span id="receiptId">91051</span><br>Date: <span id="liveDate"></span><br><br>👤 Client: <span id="receiptClientName"></span><br>📧 Contact: <span id="receiptContact"></span><br>🛠️ Service: Premium Suite (Batch + API + Unlimited)<br>💰 Amount: $9.99</div><button onclick="updateReceiptFromProfile()" style="margin-top:12px;">🔄 Update with My Info</button></div>
+    <div class="receipt-card"><div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;"><h3>🧾 OFFICIAL RECEIPT</h3><div><button id="editReceiptBtn" style="width:auto; background:#ff9800; padding:6px 14px;">✏️ Edit</button><button id="saveReceiptBtn" style="width:auto; background:#2e7d32; padding:6px 14px;">💾 Save</button></div></div><div id="receiptEditableArea" style="background:#0f172a; border-radius:24px; padding:20px; font-family:monospace; margin-top:14px; font-size:0.85rem;" contenteditable="false">✅ MARK TECH OFFICIAL RECEIPT<br>Receipt ID: MTX-<span id="receiptId">91051</span><br>Date: <span id="liveDate"></span><br><br>👤 Client: <span id="receiptClientName"></span><br>📧 Contact: <span id="receiptContact"></span><br>🛠️ Service: Premium Suite (Batch + API + Unlimited)<br>💰 Amount: $9.99</div><button onclick="updateReceiptFromProfile()" style="margin-top:12px;">🔄 Update with My Info</button></div>
 
     <section style="max-width:1400px; margin: 25px auto; padding:18px 20px; background: rgba(0,0,0,0.45); border-radius:36px;"><h3>📜 Generation History</h3><div id="fullHistoryList" class="history-flex"></div><hr style="margin:18px 0; border-color:#00e0ff;"><h3>🗂️ Receipts Archive</h3><div id="receiptsLogList" class="history-flex"></div></section>
 
-    <section style="max-width:1400px; margin: 25px auto; padding:0 16px 40px;"><div class="glass-card"><h2>📞 Connect With Us</h2><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:18px;"><div style="flex:1; text-align:center; min-width:150px;"><h3>📱 WhatsApp</h3><p>+254724356178</p><button onclick="window.open('https://wa.me/254724356178')">Chat Now</button></div><div style="flex:1; text-align:center; min-width:150px;"><h3>📧 Email</h3><p>marklinochieng@gmail.com</p><button onclick="window.location.href='mailto:marklinochieng@gmail.com'">Send Email</button></div><div style="flex:1; text-align:center; min-width:150px;"><h3>❤️ Support Donation</h3><p>M-Pesa: 522522 / Acc:1336980125</p><button onclick="copyText('M-Pesa: 522522 Account:1336980125')">Copy Details</button></div></div></div></section>
+    <section style="max-width:1400px; margin: 25px auto; padding:0 16px 40px;"><div class="glass-card"><h2>📞 Connect With Us</h2><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:18px;"><div style="flex:1; text-align:center; min-width:140px;"><h3>📱 WhatsApp</h3><p>+254724356178</p><button onclick="window.open('https://wa.me/254724356178')">Chat Now</button></div><div style="flex:1; text-align:center; min-width:140px;"><h3>📧 Email</h3><p>marklinochieng@gmail.com</p><button onclick="window.location.href='mailto:marklinochieng@gmail.com'">Send Email</button></div><div style="flex:1; text-align:center; min-width:140px;"><h3>❤️ Support Donation</h3><p>M-Pesa: 522522 / Acc:1336980125</p><button onclick="copyText('M-Pesa: 522522 Account:1336980125')">Copy Details</button></div></div></div></section>
     <div class="float-wa" onclick="window.open('https://wa.me/254724356178')">💬 WhatsApp</div>
 </div>
 
-<!-- AI BACKGROUND REMOVER MODAL - FIXED with working Remove.bg API -->
+<!-- AI BACKGROUND REMOVER MODAL - Mobile & Desktop Compatible -->
 <div id="aiRemoverModal" class="ai-remover-modal">
     <button class="close-modal" onclick="closeBgRemover()">✕ CLOSE</button>
     <div class="ai-remover-panel">
         <div class="remover-grid">
             <div class="remover-card">
-                <div class="remover-title"><span>🎨</span> MARK TECH PROFESSIONAL AI STUDIO</div>
+                <div class="remover-title"><span>🎨</span> MARK TECH AI STUDIO</div>
                 <div class="upload-area-ai" id="aiUploadArea">
                     📸 CLICK TO UPLOAD IMAGE<br>
-                    <small style="opacity:0.7;">JPG, PNG, WebP • Maintains original quality & orientation</small>
+                    <small>JPG, PNG, WebP • Preserves orientation</small>
                     <input type="file" id="aiFileInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
                 </div>
                 <div id="aiFileName" style="font-size:0.7rem; margin:8px 0; color:#aaa; text-align:center;"></div>
                 
-                <div style="margin: 18px 0;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">🎭 BACKGROUND COLOR</label>
-                    <input type="color" id="bgColorPicker" value="#ffffff" style="width: 100%; height: 50px; border-radius: 16px; cursor: pointer; border: 2px solid #3b82f6;">
+                <div style="margin: 15px 0;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600;">🎭 BACKGROUND COLOR</label>
+                    <input type="color" id="bgColorPicker" value="#ffffff" style="width: 100%; height: 45px; border-radius: 16px; cursor: pointer; border: 2px solid #3b82f6;">
                 </div>
                 
-                <div style="margin: 18px 0;">
-                    <label style="display: block; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">💎 OUTPUT QUALITY</label>
+                <div style="margin: 15px 0;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600;">💎 OUTPUT QUALITY</label>
                     <div class="quality-selector">
-                        <button type="button" class="quality-option" data-quality="lossless">📷 LOSSLESS PNG</button>
-                        <button type="button" class="quality-option" data-quality="high">✨ HIGH JPG (95%)</button>
-                        <button type="button" class="quality-option active" data-quality="web">🌐 WEB OPTIMIZED (85%)</button>
+                        <button type="button" class="quality-option" data-quality="lossless">📷 PNG</button>
+                        <button type="button" class="quality-option" data-quality="high">✨ HIGH JPG</button>
+                        <button type="button" class="quality-option active" data-quality="web">🌐 WEB JPG</button>
                     </div>
                 </div>
                 
@@ -417,12 +427,12 @@
                 
                 <button class="btn-primary-ai" id="aiProcessBtn">🚀 REMOVE BACKGROUND</button>
                 <button class="btn-secondary-ai" id="aiDownloadBtn" disabled>💾 DOWNLOAD RESULT</button>
-                <div id="aiQualityNote" style="font-size:0.65rem; text-align:center; margin-top:12px; opacity:0.6;">⚡ Powered by Remove.bg AI • Preserves original orientation</div>
+                <div style="font-size:0.6rem; text-align:center; margin-top:10px; opacity:0.6;">⚡ Powered by Remove.bg AI • Works on all devices</div>
             </div>
             <div class="remover-card">
                 <div class="remover-title"><span>👁️</span> LIVE PREVIEW</div>
-                <div class="canvas-preview"><canvas id="aiCanvas" style="max-width:100%; max-height:500px; width:auto; height:auto;"></canvas></div>
-                <div id="aiMessage" style="margin-top:12px; font-size:0.8rem; text-align:center; padding:8px; border-radius:50px; background:rgba(0,224,255,0.1);">✨ Ready: Upload image and click Remove Background</div>
+                <div class="canvas-preview"><canvas id="aiCanvas" style="max-width:100%; max-height:400px; width:auto; height:auto;"></canvas></div>
+                <div id="aiMessage" style="margin-top:12px; font-size:0.75rem; text-align:center; padding:8px; border-radius:50px; background:rgba(0,224,255,0.1);">✨ Upload image and click Remove Background</div>
             </div>
         </div>
     </div>
@@ -481,7 +491,7 @@
     function downloadOutput() { let type = document.getElementById("barcodeType").value; if(type === "QR"){ let canvas = document.getElementById("qrCanvas"); if(canvas && canvas.toDataURL) { let a = document.createElement("a"); a.download = "qrcode.png"; a.href = canvas.toDataURL(); a.click(); } } else { let svg = document.getElementById("barcodeSvg"); if(svg.innerHTML.trim()) { let blob = new Blob([new XMLSerializer().serializeToString(svg)], {type:"image/svg+xml"}); let url = URL.createObjectURL(blob); let a = document.createElement("a"); a.download = "barcode.svg"; a.href = url; a.click(); URL.revokeObjectURL(url); } } }
     function shareOutput() { let text = document.getElementById("inputData").value; if(!text) { alert("Enter data first"); return; } if(navigator.share) navigator.share({title:"Barcode", text:text}); else navigator.clipboard.writeText(text).then(()=>alert("Data copied")); }
     function saveToHistory() { let val = document.getElementById("inputData").value.trim(); if(!val) { alert("Enter data to save"); return; } historyArray = [val, ...historyArray.filter(v=>v!==val)]; if(historyArray.length>12) historyArray.pop(); localStorage.setItem("barcodeHist",JSON.stringify(historyArray)); renderHistory(); alert("Saved"); }
-    function renderHistory() { let div = document.getElementById("fullHistoryList"); if(div) div.innerHTML = historyArray.map(item=>`<div class="history-item" onclick="document.getElementById('inputData').value='${item.replace(/'/g,"\\'")}'; generateCode();">📌 ${item.substring(0,32)}</div>`).join(''); }
+    function renderHistory() { let div = document.getElementById("fullHistoryList"); if(div) div.innerHTML = historyArray.map(item=>`<div class="history-item" onclick="document.getElementById('inputData').value='${item.replace(/'/g,"\\'")}'; generateCode();">📌 ${item.substring(0,28)}</div>`).join(''); }
     function generateApiKey() { apiKey = "MTK-"+Math.random().toString(36).substr(2,20); localStorage.setItem("app_api_key",apiKey); document.getElementById("apiKeyDisplay").innerHTML = `🔑 ${apiKey}`; document.getElementById("apiTestResult").innerHTML = "✅ New API credentials generated"; }
     function testApiCall() { document.getElementById("apiTestResult").innerHTML = `✅ API Test Successful | Key active`; }
     function runBatchGenerator() { alert("Batch mode ready"); }
@@ -497,7 +507,7 @@
     function loadReceipt(idx){ let rec = receiptsArray[idx]; if(rec && rec.content){ document.getElementById("receiptEditableArea").innerHTML = rec.content; alert("Receipt loaded"); } }
     function initMovingLines(){ let c = document.getElementById("movingLines"); for(let i=0;i<30;i++){ let l = document.createElement("div"); l.className = "line"; l.style.left = Math.random()*100+"%"; l.style.animationDuration = 5+Math.random()*9+"s"; l.style.animationDelay = Math.random()*7+"s"; c.appendChild(l); } }
     
-    // ========== BACKGROUND REMOVER - WORKING WITH Remove.bg API ==========
+    // ========== BACKGROUND REMOVER - WORKING ON BOTH MOBILE & DESKTOP ==========
     let processedImageBlob = null;
     let currentQuality = "web";
     
@@ -523,7 +533,6 @@
             const ctx = canvas.getContext('2d');
             
             img.onload = () => {
-                // PRESERVE EXACT DIMENSIONS - maintain portrait/landscape orientation
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.fillStyle = bgColor;
@@ -532,23 +541,30 @@
                 URL.revokeObjectURL(url);
                 resolve();
             };
-            img.onerror = () => {
-                URL.revokeObjectURL(url);
-                resolve();
-            };
+            img.onerror = () => { URL.revokeObjectURL(url); resolve(); };
             img.src = url;
         });
     }
     
-    async function removeBackgroundWithRemoveBg(file) {
+    async function processBackgroundRemoval() {
+        const fileInput = document.getElementById('aiFileInput');
+        if (!fileInput.files.length) {
+            document.getElementById('aiMessage').innerHTML = "❌ Please upload an image first";
+            document.getElementById('aiMessage').style.background = "rgba(239,68,68,0.2)";
+            return;
+        }
+        
+        const file = fileInput.files[0];
+        const processBtn = document.getElementById('aiProcessBtn');
         const msgDiv = document.getElementById('aiMessage');
         const progressContainer = document.getElementById('progressContainer');
         const progressFill = document.getElementById('progressBarFill');
         
+        processBtn.disabled = true;
+        processBtn.innerHTML = '<span class="loader-spinner"></span> PROCESSING...';
         progressContainer.style.display = 'block';
         progressFill.style.width = '30%';
-        msgDiv.innerHTML = '📤 Uploading to AI server...';
-        msgDiv.style.background = "rgba(59,130,246,0.2)";
+        msgDiv.innerHTML = '📤 Uploading...';
         
         const formData = new FormData();
         formData.append("image_file", file);
@@ -556,7 +572,7 @@
         
         try {
             progressFill.style.width = '60%';
-            msgDiv.innerHTML = '🧠 AI processing background removal...';
+            msgDiv.innerHTML = '🧠 AI removing background...';
             
             const response = await fetch('https://api.remove.bg/v1.0/removebg', {
                 method: 'POST',
@@ -564,10 +580,7 @@
                 body: formData
             });
             
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API Error: ${response.status} - ${errorText}`);
-            }
+            if (!response.ok) throw new Error(`API Error: ${response.status}`);
             
             progressFill.style.width = '85%';
             msgDiv.innerHTML = '📥 Processing result...';
@@ -581,46 +594,24 @@
             await drawToCanvas(resultBlob, bgColor);
             
             document.getElementById('aiDownloadBtn').disabled = false;
-            msgDiv.innerHTML = '✅ Background removed successfully! Original orientation preserved.';
+            msgDiv.innerHTML = '✅ Background removed successfully! Orientation preserved.';
             msgDiv.style.background = "rgba(16,185,129,0.2)";
             msgDiv.style.color = "#86efac";
             
             setTimeout(() => { progressContainer.style.display = 'none'; }, 1000);
-            return true;
         } catch (err) {
-            console.error('Remove.bg error:', err);
+            console.error(err);
             msgDiv.innerHTML = `❌ Error: ${err.message}. Please try another image.`;
             msgDiv.style.background = "rgba(239,68,68,0.2)";
             msgDiv.style.color = "#fca5a5";
             progressContainer.style.display = 'none';
-            return false;
+        } finally {
+            processBtn.disabled = false;
+            processBtn.innerHTML = '🚀 REMOVE BACKGROUND';
         }
     }
     
-    async function processBackgroundRemoval() {
-        const fileInput = document.getElementById('aiFileInput');
-        if (!fileInput.files.length) {
-            document.getElementById('aiMessage').innerHTML = "❌ Please upload an image first";
-            document.getElementById('aiMessage').style.background = "rgba(239,68,68,0.2)";
-            return;
-        }
-        
-        const file = fileInput.files[0];
-        const processBtn = document.getElementById('aiProcessBtn');
-        processBtn.disabled = true;
-        processBtn.innerHTML = '<span class="loader-spinner"></span> PROCESSING...';
-        
-        const success = await removeBackgroundWithRemoveBg(file);
-        
-        processBtn.disabled = false;
-        processBtn.innerHTML = '🚀 REMOVE BACKGROUND';
-        
-        if (!success) {
-            document.getElementById('aiMessage').innerHTML = "❌ Processing failed. Please try again with a different image.";
-        }
-    }
-    
-    function downloadMasterFile() {
+    function downloadResult() {
         if (!processedImageBlob) return;
         
         const bgColor = document.getElementById('bgColorPicker').value;
@@ -630,7 +621,6 @@
         const ctx = canvas.getContext('2d');
         
         img.onload = () => {
-            // PRESERVE EXACT ORIENTATION - no flipping, maintain aspect ratio
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.fillStyle = bgColor;
@@ -657,13 +647,13 @@
             link.click();
             
             URL.revokeObjectURL(url);
-            document.getElementById('aiMessage').innerHTML = '✅ File downloaded! Original orientation maintained.';
+            document.getElementById('aiMessage').innerHTML = '✅ Download complete!';
             setTimeout(() => {
-                if (document.getElementById('aiMessage').innerHTML.includes('downloaded')) {
-                    document.getElementById('aiMessage').innerHTML = '✨ Ready for next image: upload and process';
+                if (document.getElementById('aiMessage').innerHTML === '✅ Download complete!') {
+                    document.getElementById('aiMessage').innerHTML = '✨ Ready for next image';
                     document.getElementById('aiMessage').style.background = "rgba(0,224,255,0.1)";
                 }
-            }, 3000);
+            }, 2000);
         };
         img.src = url;
     }
@@ -673,7 +663,7 @@
     
     document.getElementById('openBgRemoverBtn').onclick = openBgRemover;
     document.getElementById('aiProcessBtn').onclick = processBackgroundRemoval;
-    document.getElementById('aiDownloadBtn').onclick = downloadMasterFile;
+    document.getElementById('aiDownloadBtn').onclick = downloadResult;
     document.getElementById('aiUploadArea').onclick = () => document.getElementById('aiFileInput').click();
     
     document.getElementById('bgColorPicker').addEventListener('input', async () => {
@@ -688,7 +678,6 @@
             const file = e.target.files[0];
             document.getElementById('aiFileName').innerHTML = `📄 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
             
-            // Show preview of original image
             const previewUrl = URL.createObjectURL(file);
             const img = new Image();
             img.onload = () => {
